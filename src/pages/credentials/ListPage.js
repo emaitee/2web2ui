@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Page } from '@sparkpost/matchbox';
 
 import { fetchApiKeys } from 'actions/credentials';
@@ -9,13 +10,17 @@ import TableCollection from 'components/collection/TableCollection';
 import Layout from 'components/layout/Layout';
 import PermissionsColumn from './components/PermissionsColumn';
 
-const COLUMNS = ['Name', 'Key', 'Permissions'];
+const columns = ['Name', 'Key', 'Permissions'];
+
+const primaryAction = {
+  content: 'Create API Key',
+  Component: Link,
+  to: '/account/credentials/create'
+};
 
 const getRowData = (key) => [
-  key.label,
-  <code>
-    {key.short_key} ••••
-  </code>,
+  <Link to={`/account/credentials/details/${key.id}`}>{key.label}</Link>,
+  <code>{key.short_key} ••••</code>,
   <PermissionsColumn grants={key.grants} />
 ];
 
@@ -29,7 +34,7 @@ export class ListPage extends Component {
 
     return (
       <TableCollection
-        columns={COLUMNS}
+        columns={columns}
         getRowData={getRowData}
         pagination={true}
         rows={keys}
@@ -54,7 +59,7 @@ export class ListPage extends Component {
 
     return (
       <Layout.App loading={loading}>
-        <Page title="API Keys" />
+        <Page primaryAction={primaryAction} title="API Keys" />
         {error ? this.renderError() : this.renderCollection()}
       </Layout.App>
     );

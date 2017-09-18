@@ -48,6 +48,8 @@ export default () => (
 
       <ProtectedRoute exact path='/account/billing' component={BillingPage} />
       <ProtectedRoute exact path='/account/credentials' component={credentials.ListPage} />
+      <ProtectedRoute exact path='/account/credentials/create' component={credentials.CreatePage} />
+      <ProtectedRoute path='/account/credentials/details/:id' component={credentials.DetailsPage} />
       <ProtectedRoute exact path='/account/profile' component={ProfilePage} />
 
       <GlobalAlert />

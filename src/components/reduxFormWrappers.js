@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Select, Radio } from '@sparkpost/matchbox';
+import { Checkbox, TextField, Select, Radio } from '@sparkpost/matchbox';
 
 import SubaccountTypeahead from './subaccountTypeahead/SubaccountTypeahead';
 
@@ -37,6 +37,10 @@ export const RadioGroup = ({ input, options, title }) => (
       />
     ))}
   </Radio.Group>
+);
+
+export const CheckboxWrapper = ({ input, ...rest }) => (
+  <Checkbox id={input.name} {...input} {...rest} />
 );
 
 /**
