@@ -12,9 +12,29 @@ describe('fetchApiKeys()', () => {
   });
 
   it('does not dispatch when keys are present', () => {
-    const store = createMockStore({ credentials: { keys: [{ label: 'a' }]}});
+    const store = createMockStore({
+      credentials: { keys: [{ label: 'a' }]}
+    });
 
     store.dispatch(Actions.fetchApiKeys());
+    expect(store.getActions()).toHaveLength(0);
+  });
+});
+
+describe('fetchGrants()', () => {
+  it('dispatches the correct action when no grants are present', () => {
+    const store = createMockStore({ credentials: { grants: []}});
+
+    store.dispatch(Actions.fetchGrants());
     expect(store.getActions()).toMatchSnapshot();
+  });
+
+  it('does not dispatch when grants are present', () => {
+    const store = createMockStore({
+      credentials: { grants: ['metrics/view']}
+    });
+
+    store.dispatch(Actions.fetchGrants());
+    expect(store.getActions()).toHaveLength(0);
   });
 });
