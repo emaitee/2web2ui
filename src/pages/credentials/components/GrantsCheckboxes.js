@@ -4,6 +4,7 @@ import { Field } from 'redux-form';
 import { Grid } from '@sparkpost/matchbox';
 
 import { CheckboxWrapper } from 'components/reduxFormWrappers';
+import styles from './GrantsCheckboxes.module.scss';
 
 const GrantsCheckboxes = ({ grants }) => {
   const grantFields = map(grants, (grant) => (
@@ -26,7 +27,7 @@ const GrantsCheckboxes = ({ grants }) => {
     </Grid.Column>
   ));
 
-  return <Grid>{grantCols}</Grid>;
+  return <Grid className={styles.Grid}>{grantCols}</Grid>;
 };
 
 export default GrantsCheckboxes;

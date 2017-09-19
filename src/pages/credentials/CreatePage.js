@@ -33,7 +33,7 @@ export class CreatePage extends Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  loading: state.credentials.loadingGrants
+  loading: state.credentials.loadingGrants || state.subaccounts.listLoading
 });
 
 export default connect(mapStateToProps)(CreatePage);

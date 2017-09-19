@@ -65,14 +65,14 @@ const mapStateToProps = (state, props) => {
   } = state.credentials;
 
   // TODO: perfect place for a selector.
-  const apiKey = find(keys, { id: props.match.params.id });
+  const apiKey = find(keys, { id: props.match.params.id }) || { grants: []};
 
   return {
     apiKey,
     keys,
     error,
     grants,
-    loading: loadingGrants || loadingKeys
+    loading: loadingGrants || loadingKeys || state.subaccounts.listLoading
   };
 };
 
