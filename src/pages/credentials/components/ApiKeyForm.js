@@ -1,4 +1,4 @@
-import { fromPairs, keyBy, map } from 'lodash';
+import { find, fromPairs, keyBy, map } from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, change, reduxForm, formValueSelector } from 'redux-form';
@@ -6,7 +6,6 @@ import { Button } from '@sparkpost/matchbox';
 
 import { fetchGrants } from 'actions/credentials';
 import { list as listSubaccounts } from 'actions/subaccounts';
-// import SubaccountTypeahead from 'components/subaccountTypeahead/SubaccountTypeahead';
 import {
   RadioGroup,
   TextFieldWrapper,
@@ -101,17 +100,17 @@ const mapStateToProps = (state, props) => {
   const initialGrantsRadio =
     isNew || allGrants.length <= apiKey.grants.length ? 'all' : 'select';
 
-  const subaccounts = state.subaccounts.list.filter(
-    (item) => item.compliance_status === 'active'
-  );
+  const subaccounts = state.subaccounts.list;
 
   return {
     grants,
-    subaccounts,
+    subaccounts: subaccounts.filter(
+      (item) => item.compliance_status === 'active'
+    ),
     showGrants: grantsRadio === 'select',
     initialValues: {
       grantsRadio: initialGrantsRadio,
-      // subaccount: {},
+      subaccount: find(subaccounts, { id: apiKey.subaccount_id }),
       ...initialValues
     }
   };
