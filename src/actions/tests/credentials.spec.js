@@ -3,11 +3,11 @@ import * as Actions from '../credentials';
 
 jest.mock('../helpers/sparkpostApiRequest', () => jest.fn((action) => action));
 
-describe('fetchApiKeys()', () => {
+describe('listApiKeys()', () => {
   it('dispatches the correct action when no keys are present', () => {
     const store = createMockStore({ credentials: { keys: []}});
 
-    store.dispatch(Actions.fetchApiKeys());
+    store.dispatch(Actions.listApiKeys());
     expect(store.getActions()).toMatchSnapshot();
   });
 
@@ -16,16 +16,16 @@ describe('fetchApiKeys()', () => {
       credentials: { keys: [{ label: 'a' }]}
     });
 
-    store.dispatch(Actions.fetchApiKeys());
+    store.dispatch(Actions.listApiKeys());
     expect(store.getActions()).toHaveLength(0);
   });
 });
 
-describe('fetchGrants()', () => {
+describe('listGrants()', () => {
   it('dispatches the correct action when no grants are present', () => {
     const store = createMockStore({ credentials: { grants: []}});
 
-    store.dispatch(Actions.fetchGrants());
+    store.dispatch(Actions.listGrants());
     expect(store.getActions()).toMatchSnapshot();
   });
 
@@ -34,7 +34,7 @@ describe('fetchGrants()', () => {
       credentials: { grants: ['metrics/view']}
     });
 
-    store.dispatch(Actions.fetchGrants());
+    store.dispatch(Actions.listGrants());
     expect(store.getActions()).toHaveLength(0);
   });
 });

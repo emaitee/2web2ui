@@ -1,17 +1,25 @@
-import { find, fromPairs, keyBy, map } from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, change, reduxForm, formValueSelector } from 'redux-form';
 import { Button } from '@sparkpost/matchbox';
 
-import { fetchGrants } from 'actions/credentials';
+import { listGrants } from 'actions/credentials';
 import { list as listSubaccounts } from 'actions/subaccounts';
 import {
   RadioGroup,
   TextFieldWrapper,
   SubaccountTypeaheadWrapper
 } from 'components/reduxFormWrappers';
+import {
+  getGrants,
+  getIsNew,
+  getInitialGrantsRadio,
+  getInitialSubaccount,
+  getInitialValues
+} from 'selectors/credentials';
+import validIpList from '../helpers/validIpList';
 import GrantsCheckboxes from './GrantsCheckboxes';
+
 
 const formName = 'apiKeyForm';
 const grantsOptions = [
@@ -21,20 +29,9 @@ const grantsOptions = [
 
 const required = (value) => (value ? undefined : 'Required');
 
-// TODO extract me? (selector?)
-const formatValues = (apiKey) => {
-  const grantsPairs = map(apiKey.grants, (grant) => [grant, 'true']);
-
-  return {
-    ...apiKey,
-    grants: fromPairs(grantsPairs)
-  };
-};
-
 export class ApiKeyForm extends Component {
   componentDidMount() {
-    // TODO: listX or fetchX? consistency is key.
-    this.props.fetchGrants();
+    this.props.listGrants();
     this.props.listSubaccounts();
   }
 
@@ -46,7 +43,7 @@ export class ApiKeyForm extends Component {
     const {
       grants,
       subaccounts,
-      isNew = false,
+      isNew,
       handleSubmit,
       pristine,
       showGrants,
@@ -75,8 +72,15 @@ export class ApiKeyForm extends Component {
           title="API Permissions"
           options={grantsOptions}
         />
-
         {showGrants && <GrantsCheckboxes grants={grants} />}
+        <Field
+          name="validIps"
+          component={TextFieldWrapper}
+          label="Allowed IPs"
+          helpText="Leaving the field blank will allow access by valid API keys from any IP address."
+          placeholder="10.20.30.40, 10.20.30.0/24"
+          validate={validIpList}
+        />
 
         <Button submit primary disabled={submitting || pristine}>
           {submitText}
@@ -90,34 +94,20 @@ export class ApiKeyForm extends Component {
 const ApiKeyReduxForm = reduxForm({ form: formName })(ApiKeyForm);
 const valueSelector = formValueSelector(formName);
 
-const mapStateToProps = (state, props) => {
-  // TODO: room for lots of selectors here
-  const allGrants = state.credentials.grants;
-  const { apiKey = { grants: []}, isNew } = props;
-  const grants = keyBy(allGrants, 'key');
-  const grantsRadio = valueSelector(state, 'grantsRadio');
-  const initialValues = formatValues(apiKey);
-  const initialGrantsRadio =
-    isNew || allGrants.length <= apiKey.grants.length ? 'all' : 'select';
-
-  const subaccounts = state.subaccounts.list;
-
-  return {
-    grants,
-    subaccounts: subaccounts.filter(
-      (item) => item.compliance_status === 'active'
-    ),
-    showGrants: grantsRadio === 'select',
-    initialValues: {
-      grantsRadio: initialGrantsRadio,
-      subaccount: find(subaccounts, { id: apiKey.subaccount_id }),
-      ...initialValues
-    }
-  };
-};
+const mapStateToProps = (state, props) => ({
+  grants: getGrants(state),
+  subaccounts: state.subaccounts.list,
+  showGrants: valueSelector(state, 'grantsRadio') === 'select',
+  isNew: getIsNew(state, props),
+  initialValues: {
+    grantsRadio: getInitialGrantsRadio(state, props),
+    subaccount: getInitialSubaccount(state, props),
+    ...getInitialValues(state, props)
+  }
+});
 
 export default connect(mapStateToProps, {
   formChange: change,
-  fetchGrants,
+  listGrants,
   listSubaccounts
 })(ApiKeyReduxForm);

@@ -1,11 +1,11 @@
-import { find } from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Page, Panel } from '@sparkpost/matchbox';
 
-import { fetchApiKeys } from 'actions/credentials';
+import { deleteApiKey, listApiKeys, updateApiKey } from 'actions/credentials';
 import Layout from 'components/layout/Layout';
+import { getApiKey, getLoading } from 'selectors/credentials';
 import ApiKeyForm from './components/ApiKeyForm';
 
 const breadcrumbAction = {
@@ -15,25 +15,21 @@ const breadcrumbAction = {
 };
 
 export class CredentialsDetailsPage extends Component {
+  static defaultProps = {
+    apiKey: {}
+  };
+
   constructor(props) {
     super(props);
 
-    this.secondaryActions = [{ content: 'Delete', onClick: this.onDelete }];
+    this.secondaryActions = [
+      { content: 'Delete', onClick: this.props.deleteApiKey }
+    ];
   }
 
   componentDidMount() {
-    this.props.fetchApiKeys();
+    this.props.listApiKeys();
   }
-
-  onDelete = () => {
-    console.log('DELETE', this.props.apiKey.id); // eslint-disable-line
-    // this.props.deleteApiKey();
-  };
-
-  onSubmit = (values) => {
-    console.log('SUBMIT', this.props.apiKey.id, values); // eslint-disable-line
-    // this.props.updateApiKey(values);
-  };
 
   render() {
     const { apiKey, loading } = this.props;
@@ -47,7 +43,7 @@ export class CredentialsDetailsPage extends Component {
         />
         <Panel>
           <Panel.Section>
-            <ApiKeyForm apiKey={apiKey} onSubmit={this.onSubmit} />
+            <ApiKeyForm apiKey={apiKey} onSubmit={this.props.updateApiKey} />
           </Panel.Section>
         </Panel>
       </Layout.App>
@@ -56,26 +52,27 @@ export class CredentialsDetailsPage extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const {
-    error,
-    grants,
-    keys,
-    loadingGrants,
-    loadingKeys
-  } = state.credentials;
-
-  // TODO: perfect place for a selector.
-  const apiKey = find(keys, { id: props.match.params.id }) || { grants: []};
+  const { error, grants, keys } = state.credentials;
 
   return {
-    apiKey,
+    apiKey: getApiKey(state, props),
     keys,
     error,
     grants,
-    loading: loadingGrants || loadingKeys || state.subaccounts.listLoading
+    loading: getLoading(state)
+  };
+};
+
+const mapDispatchToProps = (dispatch, props) => {
+  const { id } = props.match.params;
+
+  return {
+    deleteApiKey: () => dispatch(deleteApiKey(id)),
+    listApiKeys: () => dispatch(listApiKeys()),
+    updateApiKey: (values) => dispatch(updateApiKey(id, values))
   };
 };
 
 export default withRouter(
-  connect(mapStateToProps, { fetchApiKeys })(CredentialsDetailsPage)
+  connect(mapStateToProps, mapDispatchToProps)(CredentialsDetailsPage)
 );

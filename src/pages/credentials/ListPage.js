@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Page } from '@sparkpost/matchbox';
 
-import { fetchApiKeys } from 'actions/credentials';
+import { listApiKeys } from 'actions/credentials';
 
 import ApiErrorBanner from 'components/apiErrorBanner/ApiErrorBanner';
 import TableCollection from 'components/collection/TableCollection';
 import Layout from 'components/layout/Layout';
+import { getLoading } from 'selectors/credentials';
 import PermissionsColumn from './components/PermissionsColumn';
 
 const columns = ['Name', 'Key', 'Permissions'];
@@ -26,7 +27,7 @@ const getRowData = (key) => [
 
 export class ListPage extends Component {
   componentDidMount() {
-    this.props.fetchApiKeys();
+    this.props.listApiKeys();
   }
 
   renderCollection() {
@@ -43,13 +44,13 @@ export class ListPage extends Component {
   }
 
   renderError() {
-    const { error, fetchApiKeys } = this.props;
+    const { error, listApiKeys } = this.props;
 
     return (
       <ApiErrorBanner
         errorDetails={error.message}
         message="Sorry, we seem to have had some trouble loading your API keys."
-        reload={fetchApiKeys}
+        reload={listApiKeys}
       />
     );
   }
@@ -66,10 +67,13 @@ export class ListPage extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  error: state.credentials.error,
-  keys: state.credentials.keys,
-  loading: state.credentials.loadingKeys
-});
+const mapStateToProps = (state) => {
+  const { error, keys } = state.credentials;
+  return {
+    error,
+    keys,
+    loading: getLoading(state)
+  };
+};
 
-export default connect(mapStateToProps, { fetchApiKeys })(ListPage);
+export default connect(mapStateToProps, { listApiKeys })(ListPage);
