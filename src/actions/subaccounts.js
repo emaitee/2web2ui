@@ -2,7 +2,7 @@ import sparkpostApiRequest from 'actions/helpers/sparkpostApiRequest';
 
 export function list(force = false) {
   return (dispatch, getState) => {
-    if (!force && getState().subaccounts.list.length) {
+    if (!force && getState().subaccounts.listLoaded) {
       return;
     }
 

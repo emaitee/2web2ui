@@ -3,7 +3,7 @@ import sparkpostApiRequest from './helpers/sparkpostApiRequest';
 
 export function listApiKeys() {
   return (dispatch, getState) => {
-    if (getState().credentials.keys.length) {
+    if (getState().credentials.keysLoaded) {
       return;
     }
 
@@ -21,45 +21,49 @@ export function listApiKeys() {
 
 export function createApiKey(key) {
   return (dispatch, getState) =>
-    dispatch({
-      type: 'CREATE_API_KEY',
-      meta: {
-        method: 'POST',
-        url: '/api-keys',
-        ...formatKeyForRequest(key, getState)
-      }
-    });
+    dispatch(
+      sparkpostApiRequest({
+        type: 'CREATE_API_KEY',
+        meta: {
+          method: 'POST',
+          url: '/api-keys',
+          ...formatKeyForRequest(key, getState)
+        }
+      })
+    );
 }
 
 export function deleteApiKey(id) {
-  return {
+  return sparkpostApiRequest({
     type: 'DELETE_API_KEY',
     meta: {
       method: 'DELETE',
       url: `/api-keys/${id}`
     }
-  };
+  });
 }
 
 export function updateApiKey(id, key) {
   return (dispatch, getState) =>
-    dispatch({
-      type: 'UPDATE_API_KEY',
-      meta: {
-        method: 'PUT',
-        url: `/api-keys/${id}`,
-        ...formatKeyForRequest(key, getState)
-      }
-    });
+    dispatch(
+      sparkpostApiRequest({
+        type: 'UPDATE_API_KEY',
+        meta: {
+          method: 'PUT',
+          url: `/api-keys/${id}`,
+          ...formatKeyForRequest(key, getState)
+        }
+      })
+    );
 }
 
 export function listGrants() {
   return (dispatch, getState) => {
-    if (getState().credentials.grants.length) {
+    if (getState().credentials.grantsLoaded) {
       return;
     }
 
-    dispatch(
+    return dispatch(
       sparkpostApiRequest({
         type: 'LIST_GRANTS',
         meta: {

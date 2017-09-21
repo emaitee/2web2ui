@@ -1,8 +1,10 @@
 const initialState = {
   grants: [],
+  grantsLoaded: false,
+  grantsLoading: false,
   keys: [],
-  loadingGrants: false,
-  loadingKeys: false,
+  keysLoaded: false,
+  keysLoading: false,
   error: null
 };
 
@@ -10,28 +12,34 @@ export default (state = initialState, { payload, type }) => {
   switch (type) {
     // LIST_API_KEYS
     case 'LIST_API_KEYS_PENDING': {
-      return { ...state, loadingKeys: true, error: null };
+      return { ...state, keysLoading: true, error: null };
     }
 
     case 'LIST_API_KEYS_SUCCESS': {
-      return { ...state, loadingKeys: false, keys: payload };
+      return { ...state, keysLoading: false, keysLoaded: true, keys: payload };
     }
 
     case 'LIST_API_KEYS_FAIL': {
-      return { ...state, loadingKeys: false, error: payload };
+      return { ...state, keysLoading: false, keysLoaded: true, error: payload };
+    }
+
+    case 'CREATE_API_KEY_SUCCESS':
+    case 'DELETE_API_KEY_SUCCESS':
+    case 'UPDATE_API_KEY_SUCCESS': {
+      return { ...state, keysLoaded: false };
     }
 
     // LIST_GRANTS
     case 'LIST_GRANTS_PENDING': {
-      return { ...state, loadingGrants: true, error: null };
+      return { ...state, grantsLoading: true, error: null };
     }
 
     case 'LIST_GRANTS_SUCCESS': {
-      return { ...state, loadingGrants: false, grants: payload };
+      return { ...state, grantsLoading: false, grantsLoaded: true, grants: payload };
     }
 
     case 'LIST_GRANTS_FAIL': {
-      return { ...state, loadingGrants: false, error: payload };
+      return { ...state, grantsLoading: false, grantsLoaded: true, error: payload };
     }
 
     default: {

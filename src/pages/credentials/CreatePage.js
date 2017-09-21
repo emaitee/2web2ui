@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Page, Panel } from '@sparkpost/matchbox';
 
 import { createApiKey } from 'actions/credentials';
@@ -14,19 +14,34 @@ const breadcrumbAction = {
   to: '/account/credentials'
 };
 
-const CreatePage = ({ createApiKey, loading }) => (
-  <Layout.App loading={loading}>
-    <Page title="Create API Key" breadcrumbAction={breadcrumbAction} />
-    <Panel>
-      <Panel.Section>
-        <ApiKeyForm onSubmit={createApiKey} />
-      </Panel.Section>
-    </Panel>
-  </Layout.App>
-);
+export class CreatePage extends React.Component {
+  onSubmit = (values) => {
+    const { createApiKey, history } = this.props;
+
+    createApiKey(values).then((res) => {
+      // TODO: showAlert({ type: 'success', message: 'API Key created'})
+      history.push('/account/credentials');
+    });
+  };
+
+  render() {
+    return (
+      <Layout.App loading={this.props.loading}>
+        <Page title="Create API Key" breadcrumbAction={breadcrumbAction} />
+        <Panel>
+          <Panel.Section>
+            <ApiKeyForm onSubmit={this.onSubmit} />
+          </Panel.Section>
+        </Panel>
+      </Layout.App>
+    );
+  }
+}
 
 const mapStateToProps = (state, props) => ({
   loading: getLoading(state)
 });
 
-export default connect(mapStateToProps, { createApiKey })(CreatePage);
+export default withRouter(
+  connect(mapStateToProps, { createApiKey })(CreatePage)
+);

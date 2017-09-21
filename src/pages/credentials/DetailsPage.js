@@ -5,6 +5,7 @@ import { Page, Panel } from '@sparkpost/matchbox';
 
 import { deleteApiKey, listApiKeys, updateApiKey } from 'actions/credentials';
 import Layout from 'components/layout/Layout';
+import DeleteModal from 'components/deleteModal/DeleteModal';
 import { getApiKey, getLoading } from 'selectors/credentials';
 import ApiKeyForm from './components/ApiKeyForm';
 
@@ -19,17 +20,42 @@ export class CredentialsDetailsPage extends Component {
     apiKey: {}
   };
 
+  state = {
+    showDeleteModal: false
+  };
+
   constructor(props) {
     super(props);
-
     this.secondaryActions = [
-      { content: 'Delete', onClick: this.props.deleteApiKey }
+      { content: 'Delete', onClick: this.onToggleDelete }
     ];
   }
 
   componentDidMount() {
     this.props.listApiKeys();
   }
+
+  onDelete = () => {
+    const { deleteApiKey, history } = this.props;
+
+    deleteApiKey().then(() => {
+      // TODO: showAlert({ type: 'success', message: 'API Key deleted'})
+      history.push('/account/credentials');
+    });
+  };
+
+  onToggleDelete = () => {
+    this.setState({ showDeleteModal: !this.state.showDeleteModal });
+  };
+
+  onSubmit = (values) => {
+    const { updateApiKey, history } = this.props;
+
+    updateApiKey(values).then((res) => {
+      // TODO: showAlert({ type: 'success', message: 'API Key updated'})
+      history.push('/account/credentials');
+    });
+  };
 
   render() {
     const { apiKey, loading } = this.props;
@@ -43,9 +69,16 @@ export class CredentialsDetailsPage extends Component {
         />
         <Panel>
           <Panel.Section>
-            <ApiKeyForm apiKey={apiKey} onSubmit={this.props.updateApiKey} />
+            <ApiKeyForm apiKey={apiKey} onSubmit={this.onSubmit} />
           </Panel.Section>
         </Panel>
+        <DeleteModal
+          open={this.state.showDeleteModal}
+          title="Delete API Key"
+          text="Are you sure you want to delete this API Key?"
+          handleToggle={this.onToggleDelete}
+          handleDelete={this.onDelete}
+        />
       </Layout.App>
     );
   }

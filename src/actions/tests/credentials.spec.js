@@ -11,9 +11,9 @@ describe('listApiKeys()', () => {
     expect(store.getActions()).toMatchSnapshot();
   });
 
-  it('does not dispatch when keys are present', () => {
+  it('does not dispatch when keys are already loaded', () => {
     const store = createMockStore({
-      credentials: { keys: [{ label: 'a' }]}
+      credentials: { keysLoaded: true }
     });
 
     store.dispatch(Actions.listApiKeys());
@@ -29,9 +29,9 @@ describe('listGrants()', () => {
     expect(store.getActions()).toMatchSnapshot();
   });
 
-  it('does not dispatch when grants are present', () => {
+  it('does not dispatch when grants are already loaded', () => {
     const store = createMockStore({
-      credentials: { grants: ['metrics/view']}
+      credentials: { grantsLoaded: true }
     });
 
     store.dispatch(Actions.listGrants());
