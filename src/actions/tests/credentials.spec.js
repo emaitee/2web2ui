@@ -1,4 +1,4 @@
-import { createMockStore } from '../../config/tests/mockStore';
+import { createMockStore } from '../../__testHelpers__/mockStore';
 import * as Actions from '../credentials';
 
 jest.mock('../helpers/sparkpostApiRequest', () => jest.fn((action) => action));
