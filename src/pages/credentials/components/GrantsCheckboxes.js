@@ -1,3 +1,4 @@
+import classnames from 'classnames/bind';
 import React from 'react';
 import { chunk, map, size } from 'lodash';
 import { Field } from 'redux-form';
@@ -6,7 +7,9 @@ import { Grid } from '@sparkpost/matchbox';
 import { CheckboxWrapper } from 'components/reduxFormWrappers';
 import styles from './GrantsCheckboxes.module.scss';
 
-const GrantsCheckboxes = ({ grants }) => {
+const cx = classnames.bind(styles);
+
+const GrantsCheckboxes = ({ grants, show }) => {
   const grantFields = map(grants, (grant) => (
     // TODO wrap me in a tooltip
     <Field
@@ -27,7 +30,9 @@ const GrantsCheckboxes = ({ grants }) => {
     </Grid.Column>
   ));
 
-  return <Grid className={styles.Grid}>{grantCols}</Grid>;
+  const gridClasses = cx('Grants', { show });
+
+  return <Grid className={gridClasses}>{grantCols}</Grid>;
 };
 
 export default GrantsCheckboxes;

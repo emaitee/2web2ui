@@ -35,10 +35,6 @@ export class ApiKeyForm extends Component {
     this.props.listSubaccounts();
   }
 
-  onChangeSubaccount = (subaccount) => {
-    this.props.formChange(formName, 'subaccount', subaccount);
-  };
-
   render() {
     const {
       grants,
@@ -72,7 +68,7 @@ export class ApiKeyForm extends Component {
           title="API Permissions"
           options={grantsOptions}
         />
-        {showGrants && <GrantsCheckboxes grants={grants} />}
+        <GrantsCheckboxes grants={grants} show={showGrants} />
         <Field
           name="validIps"
           component={TextFieldWrapper}
