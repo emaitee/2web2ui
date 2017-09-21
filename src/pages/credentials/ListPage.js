@@ -1,9 +1,10 @@
+import copy from 'copy-to-clipboard';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Page } from '@sparkpost/matchbox';
+import { Banner, Page } from '@sparkpost/matchbox';
 
-import { listApiKeys } from 'actions/credentials';
+import { hideNewApiKey, listApiKeys } from 'actions/credentials';
 
 import ApiErrorBanner from 'components/apiErrorBanner/ApiErrorBanner';
 import TableCollection from 'components/collection/TableCollection';
@@ -28,6 +29,30 @@ const getRowData = (key) => [
 export class ListPage extends Component {
   componentDidMount() {
     this.props.listApiKeys();
+  }
+
+  onClickBanner = () => {
+    copy(this.props.newKey);
+  };
+
+  renderBanner() {
+    const { hideNewApiKey, newKey } = this.props;
+
+    const action = { content: 'Copy', onClick: this.onClickBanner };
+
+    return (
+      <Banner
+        action={action}
+        title="New API Key"
+        status="success"
+        onDismiss={hideNewApiKey}
+      >
+        <p>
+          Make sure to copy your API key now. You won't be able to see it again!
+        </p>
+        <strong>{newKey}</strong>
+      </Banner>
+    );
   }
 
   renderCollection() {
@@ -56,11 +81,12 @@ export class ListPage extends Component {
   }
 
   render() {
-    const { error, loading } = this.props;
+    const { error, loading, newKey } = this.props;
 
     return (
       <Layout.App loading={loading}>
         <Page primaryAction={primaryAction} title="API Keys" />
+        {newKey && this.renderBanner()}
         {error ? this.renderError() : this.renderCollection()}
       </Layout.App>
     );
@@ -68,12 +94,15 @@ export class ListPage extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { error, keys } = state.credentials;
+  const { error, keys, newKey } = state.credentials;
   return {
     error,
     keys,
-    loading: getLoading(state)
+    loading: getLoading(state),
+    newKey
   };
 };
 
-export default connect(mapStateToProps, { listApiKeys })(ListPage);
+export default connect(mapStateToProps, { hideNewApiKey, listApiKeys })(
+  ListPage
+);

@@ -8,6 +8,7 @@
     "axios": "^0.16.1",
     "chart.js": "^2.6.0",
     "classnames": "^2.2.5",
+    "copy-to-clipboard": "^3.0.8",
     "date-fns": "^1.28.5",
     "downshift": "^1.1.1",
     "history": "^4.6.1",

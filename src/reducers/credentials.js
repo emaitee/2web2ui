@@ -5,7 +5,8 @@ const initialState = {
   keys: [],
   keysLoaded: false,
   keysLoading: false,
-  error: null
+  error: null,
+  newKey: null
 };
 
 export default (state = initialState, { payload, type }) => {
@@ -23,23 +24,40 @@ export default (state = initialState, { payload, type }) => {
       return { ...state, keysLoading: false, keysLoaded: true, error: payload };
     }
 
-    case 'CREATE_API_KEY_SUCCESS':
-    case 'DELETE_API_KEY_SUCCESS':
-    case 'UPDATE_API_KEY_SUCCESS': {
-      return { ...state, keysLoaded: false };
-    }
-
     // LIST_GRANTS
     case 'LIST_GRANTS_PENDING': {
       return { ...state, grantsLoading: true, error: null };
     }
 
     case 'LIST_GRANTS_SUCCESS': {
-      return { ...state, grantsLoading: false, grantsLoaded: true, grants: payload };
+      return {
+        ...state,
+        grants: payload,
+        grantsLoaded: true,
+        grantsLoading: false
+      };
     }
 
     case 'LIST_GRANTS_FAIL': {
-      return { ...state, grantsLoading: false, grantsLoaded: true, error: payload };
+      return {
+        ...state,
+        error: payload,
+        grantsLoaded: true,
+        grantsLoading: false
+      };
+    }
+
+    // CRUD
+    case 'CREATE_API_KEY_SUCCESS':
+      return { ...state, keysLoaded: false, newKey: payload.key };
+
+    case 'DELETE_API_KEY_SUCCESS':
+    case 'UPDATE_API_KEY_SUCCESS': {
+      return { ...state, keysLoaded: false };
+    }
+
+    case 'HIDE_NEW_API_KEY': {
+      return { ...state, newKey: null };
     }
 
     default: {

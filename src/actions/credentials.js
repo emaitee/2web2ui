@@ -1,24 +1,6 @@
 import { formatKeyForRequest } from './helpers/credentials';
 import sparkpostApiRequest from './helpers/sparkpostApiRequest';
 
-export function listApiKeys() {
-  return (dispatch, getState) => {
-    if (getState().credentials.keysLoaded) {
-      return;
-    }
-
-    return dispatch(
-      sparkpostApiRequest({
-        type: 'LIST_API_KEYS',
-        meta: {
-          method: 'GET',
-          url: '/api-keys'
-        }
-      })
-    );
-  };
-}
-
 export function createApiKey(key) {
   return (dispatch, getState) =>
     dispatch(
@@ -55,6 +37,30 @@ export function updateApiKey(id, key) {
         }
       })
     );
+}
+
+export function hideNewApiKey() {
+  return {
+    type: 'HIDE_NEW_API_KEY'
+  };
+}
+
+export function listApiKeys() {
+  return (dispatch, getState) => {
+    if (getState().credentials.keysLoaded) {
+      return;
+    }
+
+    return dispatch(
+      sparkpostApiRequest({
+        type: 'LIST_API_KEYS',
+        meta: {
+          method: 'GET',
+          url: '/api-keys'
+        }
+      })
+    );
+  };
 }
 
 export function listGrants() {
