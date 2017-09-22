@@ -50,7 +50,7 @@ export class CredentialsDetailsPage extends Component {
   onSubmit = (values) => {
     const { updateApiKey, history } = this.props;
 
-    updateApiKey(values).then((res) => {
+    return updateApiKey(values).then((res) => {
       history.push('/account/credentials');
     });
   };

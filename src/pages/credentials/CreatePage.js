@@ -18,7 +18,7 @@ export class CreatePage extends React.Component {
   onSubmit = (values) => {
     const { createApiKey, history } = this.props;
 
-    createApiKey(values).then((res) => {
+    return createApiKey(values).then((res) => {
       history.push('/account/credentials');
     });
   };
