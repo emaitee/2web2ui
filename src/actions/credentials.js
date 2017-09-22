@@ -13,14 +13,19 @@ export function createApiKey(key) {
           ...formatKeyForRequest(key, getState)
         }
       })
-    ).then(() =>
-      dispatch(
-        showAlert({
-          type: 'success',
-          message: 'API key created'
-        })
+    )
+      .then(() =>
+        dispatch(showAlert({ type: 'success', message: 'API key created' }))
       )
-    );
+      .catch((err) =>
+        dispatch(
+          showAlert({
+            type: 'error',
+            message: 'Could not create API key',
+            details: err.message
+          })
+        )
+      );
 }
 
 export function deleteApiKey(id) {
@@ -33,14 +38,19 @@ export function deleteApiKey(id) {
           url: `/api-keys/${id}`
         }
       })
-    ).then(() =>
-      dispatch(
-        showAlert({
-          type: 'success',
-          message: 'API key deleted'
-        })
+    )
+      .then(() =>
+        dispatch(showAlert({ type: 'success', message: 'API key deleted' }))
       )
-    );
+      .catch((err) =>
+        dispatch(
+          showAlert({
+            type: 'error',
+            message: 'Could not delete API key',
+            details: err.message
+          })
+        )
+      );
 }
 
 export function updateApiKey(id, key) {
@@ -54,14 +64,19 @@ export function updateApiKey(id, key) {
           ...formatKeyForRequest(key, getState)
         }
       })
-    ).then(() =>
-      dispatch(
-        showAlert({
-          type: 'success',
-          message: 'API key updated'
-        })
+    )
+      .then(() =>
+        dispatch(showAlert({ type: 'success', message: 'API key updated' }))
       )
-    );
+      .catch((err) =>
+        dispatch(
+          showAlert({
+            type: 'error',
+            message: 'Could not update API key',
+            details: err.message
+          })
+        )
+      );
 }
 
 export function hideNewApiKey() {
