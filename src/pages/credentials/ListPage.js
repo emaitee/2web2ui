@@ -27,18 +27,24 @@ const getRowData = (key) => [
 ];
 
 export class ListPage extends Component {
+  state = { copied: false };
+
   componentDidMount() {
     this.props.listApiKeys();
   }
 
   onClickBanner = () => {
     copy(this.props.newKey);
+    this.setState({ copied: true });
   };
 
   renderBanner() {
     const { hideNewApiKey, newKey } = this.props;
 
-    const action = { content: 'Copy', onClick: this.onClickBanner };
+    const action = {
+      content: this.state.copied ? 'Copied to clipboard' : 'Copy',
+      onClick: this.onClickBanner
+    };
 
     return (
       <Banner
