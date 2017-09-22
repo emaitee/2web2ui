@@ -85,9 +85,9 @@ export function hideNewApiKey() {
   };
 }
 
-export function listApiKeys() {
+export function listApiKeys(force = false) {
   return (dispatch, getState) => {
-    if (getState().credentials.keysLoaded) {
+    if (!force && getState().credentials.keysLoaded) {
       return;
     }
 
@@ -103,9 +103,9 @@ export function listApiKeys() {
   };
 }
 
-export function listGrants() {
+export function listGrants(force = false) {
   return (dispatch, getState) => {
-    if (getState().credentials.grantsLoaded) {
+    if (!force && getState().credentials.grantsLoaded) {
       return;
     }
 

@@ -38,6 +38,10 @@ export class ListPage extends Component {
     this.setState({ copied: true });
   };
 
+  onReloadApiBanner = () => {
+    this.props.listApiKeys(true); // force a refresh
+  };
+
   renderBanner() {
     const { hideNewApiKey, newKey } = this.props;
 
@@ -75,13 +79,11 @@ export class ListPage extends Component {
   }
 
   renderError() {
-    const { error, listApiKeys } = this.props;
-
     return (
       <ApiErrorBanner
-        errorDetails={error.message}
+        errorDetails={this.props.error.message}
         message="Sorry, we seem to have had some trouble loading your API keys."
-        reload={listApiKeys}
+        reload={this.onReloadApiBanner}
       />
     );
   }
