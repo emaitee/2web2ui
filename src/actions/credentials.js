@@ -1,5 +1,6 @@
 import { formatKeyForRequest } from './helpers/credentials';
 import sparkpostApiRequest from './helpers/sparkpostApiRequest';
+import { showAlert } from './globalAlert';
 
 export function createApiKey(key) {
   return (dispatch, getState) =>
@@ -12,17 +13,34 @@ export function createApiKey(key) {
           ...formatKeyForRequest(key, getState)
         }
       })
+    ).then(() =>
+      dispatch(
+        showAlert({
+          type: 'success',
+          message: 'API key created'
+        })
+      )
     );
 }
 
 export function deleteApiKey(id) {
-  return sparkpostApiRequest({
-    type: 'DELETE_API_KEY',
-    meta: {
-      method: 'DELETE',
-      url: `/api-keys/${id}`
-    }
-  });
+  return (dispatch) =>
+    dispatch(
+      sparkpostApiRequest({
+        type: 'DELETE_API_KEY',
+        meta: {
+          method: 'DELETE',
+          url: `/api-keys/${id}`
+        }
+      })
+    ).then(() =>
+      dispatch(
+        showAlert({
+          type: 'success',
+          message: 'API key deleted'
+        })
+      )
+    );
 }
 
 export function updateApiKey(id, key) {
@@ -36,6 +54,13 @@ export function updateApiKey(id, key) {
           ...formatKeyForRequest(key, getState)
         }
       })
+    ).then(() =>
+      dispatch(
+        showAlert({
+          type: 'success',
+          message: 'API key updated'
+        })
+      )
     );
 }
 

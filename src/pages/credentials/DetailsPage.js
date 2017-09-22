@@ -39,7 +39,6 @@ export class CredentialsDetailsPage extends Component {
     const { deleteApiKey, history } = this.props;
 
     deleteApiKey().then(() => {
-      // TODO: showAlert({ type: 'success', message: 'API Key deleted'})
       history.push('/account/credentials');
     });
   };
@@ -52,7 +51,6 @@ export class CredentialsDetailsPage extends Component {
     const { updateApiKey, history } = this.props;
 
     updateApiKey(values).then((res) => {
-      // TODO: showAlert({ type: 'success', message: 'API Key updated'})
       history.push('/account/credentials');
     });
   };

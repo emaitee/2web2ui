@@ -19,7 +19,6 @@ export class CreatePage extends React.Component {
     const { createApiKey, history } = this.props;
 
     createApiKey(values).then((res) => {
-      // TODO: showAlert({ type: 'success', message: 'API Key created'})
       history.push('/account/credentials');
     });
   };
