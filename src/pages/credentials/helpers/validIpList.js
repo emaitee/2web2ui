@@ -1,4 +1,4 @@
-import { trim } from 'lodash';
+import _ from 'lodash';
 import { ipRegex } from 'helpers/regex';
 
 export default function validIpList(value) {
@@ -6,7 +6,7 @@ export default function validIpList(value) {
     return;
   }
 
-  const ips = value.split(',').map(trim);
+  const ips = value.split(',').map(_.trim);
   const invalidIps = ips.filter((ip) => !ipRegex.test(ip));
 
   if (invalidIps.length) {

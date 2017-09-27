@@ -1,5 +1,4 @@
-import { pickBy, trim, keys } from 'lodash';
-
+import _ from 'lodash';
 import { getGrants } from 'selectors/credentials';
 
 export function formatKeyForRequest(key, getState) {
@@ -12,13 +11,13 @@ export function formatKeyForRequest(key, getState) {
   request.data.label = key.label;
 
   if (key.grantsRadio === 'all') {
-    request.data.grants = keys(getGrants(getState()));
+    request.data.grants = _.keys(getGrants(getState()));
   } else {
-    request.data.grants = keys(pickBy(key.grants));
+    request.data.grants = _.keys(_.pickBy(key.grants));
   }
 
   if (key.validIps) {
-    request.data.valid_ips = key.validIps.split(',').map(trim);
+    request.data.valid_ips = key.validIps.split(',').map(_.trim);
   }
 
   return request;

@@ -1,4 +1,4 @@
-import { find, fromPairs, isEmpty, join, keyBy, map, size } from 'lodash';
+import _ from 'lodash';
 import { createSelector } from 'reselect';
 
 /*
@@ -15,12 +15,12 @@ const getSubaccountsLoading = (state) => state.subaccounts.listLoading;
 
 export const getApiKey = createSelector(
   [getApiKeys, getApiKeyId],
-  (apiKeys, id) => find(apiKeys, { id })
+  (apiKeys, id) => _.find(apiKeys, { id })
 );
 
 // Convert grants array to an object keyed by `grant.key`
 export const getGrants = createSelector(getGrantsArray, (grants) =>
-  keyBy(grants, 'key')
+  _.keyBy(grants, 'key')
 );
 
 export const getLoading = createSelector(
@@ -35,25 +35,25 @@ export const getLoading = createSelector(
 const getFormApiKey = (state, props) => props.apiKey || {};
 
 export const getIsNew = createSelector(getFormApiKey, (apiKey) =>
-  isEmpty(apiKey)
+  _.isEmpty(apiKey)
 );
 
 export const getInitialGrantsRadio = createSelector(
   [getGrants, getFormApiKey, getIsNew],
   (grants, apiKey, isNew) =>
-    isNew || size(grants) <= size(apiKey.grants) ? 'all' : 'select'
+    isNew || _.size(grants) <= _.size(apiKey.grants) ? 'all' : 'select'
 );
 
 export const getInitialSubaccount = createSelector(
   [getSubaccounts, getFormApiKey],
-  (subaccounts, apiKey) => find(subaccounts, { id: apiKey.subaccount_id })
+  (subaccounts, apiKey) => _.find(subaccounts, { id: apiKey.subaccount_id })
 );
 
 export const getInitialValues = createSelector(getFormApiKey, (apiKey) => {
   // using lodash methods here allow us to handle undefined values nicely.
-  const grantsPairs = map(apiKey.grants, (grant) => [grant, 'true']);
-  const grants = fromPairs(grantsPairs);
-  const validIps = join(apiKey.valid_ips, ', ');
+  const grantsPairs = _.map(apiKey.grants, (grant) => [grant, 'true']);
+  const grants = _.fromPairs(grantsPairs);
+  const validIps = _.join(apiKey.valid_ips, ', ');
 
   return {
     ...apiKey,

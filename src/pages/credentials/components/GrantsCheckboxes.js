@@ -1,6 +1,6 @@
 import classnames from 'classnames/bind';
 import React from 'react';
-import { chunk, map, size } from 'lodash';
+import _ from 'lodash';
 import { Field } from 'redux-form';
 import { Grid } from '@sparkpost/matchbox';
 
@@ -10,7 +10,7 @@ import styles from './GrantsCheckboxes.module.scss';
 const cx = classnames.bind(styles);
 
 const GrantsCheckboxes = ({ grants, show }) => {
-  const grantFields = map(grants, (grant) => (
+  const grantFields = _.map(grants, (grant) => (
     // TODO wrap me in a tooltip
     <Field
       key={grant.key}
@@ -22,9 +22,9 @@ const GrantsCheckboxes = ({ grants, show }) => {
     />
   ));
 
-  const grantFieldChunks = chunk(grantFields, Math.ceil(size(grants) / 3));
+  const grantFieldChunks = _.chunk(grantFields, Math.ceil(_.size(grants) / 3));
 
-  const grantCols = map(grantFieldChunks, (grantFields, i) => (
+  const grantCols = _.map(grantFieldChunks, (grantFields, i) => (
     <Grid.Column xs={12} md={4} key={i}>
       {grantFields}
     </Grid.Column>
