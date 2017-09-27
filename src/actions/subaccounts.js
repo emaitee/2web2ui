@@ -1,6 +1,6 @@
 import sparkpostApiRequest from 'actions/helpers/sparkpostApiRequest';
 
-export function list(force = false) {
+export function list({ force } = {}) {
   return (dispatch, getState) => {
     if (!force && getState().subaccounts.listLoaded) {
       return;

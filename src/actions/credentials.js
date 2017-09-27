@@ -85,7 +85,7 @@ export function hideNewApiKey() {
   };
 }
 
-export function listApiKeys(force = false) {
+export function listApiKeys({ force } = {}) {
   return (dispatch, getState) => {
     if (!force && getState().credentials.keysLoaded) {
       return;
@@ -103,7 +103,7 @@ export function listApiKeys(force = false) {
   };
 }
 
-export function listGrants(force = false) {
+export function listGrants({ force } = {}) {
   return (dispatch, getState) => {
     if (!force && getState().credentials.grantsLoaded) {
       return;

@@ -39,7 +39,7 @@ export class ListPage extends Component {
   };
 
   onReloadApiBanner = () => {
-    this.props.listApiKeys(true); // force a refresh
+    this.props.listApiKeys({ force: true }); // force a refresh
   };
 
   renderBanner() {
