@@ -17,11 +17,11 @@ const columns = ['Name', 'Key', 'Permissions'];
 const primaryAction = {
   content: 'Create API Key',
   Component: Link,
-  to: '/account/credentials/create'
+  to: '/api-keys/create'
 };
 
 const getRowData = (key) => [
-  <Link to={`/account/credentials/details/${key.id}`}>{key.label}</Link>,
+  <Link to={`/api-keys/details/${key.id}`}>{key.label}</Link>,
   <code>{key.short_key} ••••</code>,
   <PermissionsColumn grants={key.grants} />
 ];

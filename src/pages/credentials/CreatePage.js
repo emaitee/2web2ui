@@ -11,7 +11,7 @@ import ApiKeyForm from './components/ApiKeyForm';
 const breadcrumbAction = {
   content: 'API Keys',
   Component: Link,
-  to: '/account/credentials'
+  to: '/api-keys'
 };
 
 export class CreatePage extends React.Component {
@@ -19,7 +19,7 @@ export class CreatePage extends React.Component {
     const { createApiKey, history } = this.props;
 
     return createApiKey(values).then((res) => {
-      history.push('/account/credentials');
+      history.push('/api-keys');
     });
   };
 

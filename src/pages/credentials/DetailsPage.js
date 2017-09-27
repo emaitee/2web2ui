@@ -12,7 +12,7 @@ import ApiKeyForm from './components/ApiKeyForm';
 const breadcrumbAction = {
   content: 'API Keys',
   Component: Link,
-  to: '/account/credentials'
+  to: '/api-keys'
 };
 
 export class CredentialsDetailsPage extends Component {
@@ -39,7 +39,7 @@ export class CredentialsDetailsPage extends Component {
     const { deleteApiKey, history } = this.props;
 
     deleteApiKey().then(() => {
-      history.push('/account/credentials');
+      history.push('/api-keys');
     });
   };
 
@@ -51,7 +51,7 @@ export class CredentialsDetailsPage extends Component {
     const { updateApiKey, history } = this.props;
 
     return updateApiKey(values).then((res) => {
-      history.push('/account/credentials');
+      history.push('/api-keys');
     });
   };
 
