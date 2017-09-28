@@ -67,11 +67,6 @@ exports[`renders without crashing 1`] = `
     <withRouter(Connect(_ProtectedRoute))
       component={[Function]}
       exact={true}
-      path="/account/billing"
-    />
-    <withRouter(Connect(_ProtectedRoute))
-      component={[Function]}
-      exact={true}
       path="/api-keys"
     />
     <withRouter(Connect(_ProtectedRoute))
@@ -87,6 +82,16 @@ exports[`renders without crashing 1`] = `
       component={[Function]}
       exact={true}
       path="/account/profile"
+    />
+    <withRouter(Connect(_ProtectedRoute))
+      component={[Function]}
+      exact={true}
+      path="/account/billing"
+    />
+    <withRouter(Connect(_ProtectedRoute))
+      component={[Function]}
+      exact={true}
+      path="/account/billing/change"
     />
     <Connect(GlobalAlert) />
   </div>
