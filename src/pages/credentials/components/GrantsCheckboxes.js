@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { Field } from 'redux-form';
 import { Grid } from '@sparkpost/matchbox';
 
-import { CheckboxWrapper } from 'components/reduxFormWrappers';
+import { CheckboxWrapper } from 'src/components/reduxFormWrappers';
 import styles from './GrantsCheckboxes.module.scss';
 
 const cx = classnames.bind(styles);

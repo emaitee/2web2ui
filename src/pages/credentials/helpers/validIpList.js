@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { ipRegex } from 'helpers/regex';
+import { ipRegex } from 'src/helpers/regex';
 
 export default function validIpList(value) {
   if (!value) {

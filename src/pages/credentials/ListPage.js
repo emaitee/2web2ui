@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Banner, Page } from '@sparkpost/matchbox';
 
-import { hideNewApiKey, listApiKeys } from 'actions/credentials';
+import { hideNewApiKey, listApiKeys } from 'src/actions/credentials';
 
-import ApiErrorBanner from 'components/apiErrorBanner/ApiErrorBanner';
-import TableCollection from 'components/collection/TableCollection';
-import Layout from 'components/layout/Layout';
-import { getLoading } from 'selectors/credentials';
+import ApiErrorBanner from 'src/components/apiErrorBanner/ApiErrorBanner';
+import TableCollection from 'src/components/collection/TableCollection';
+import Layout from 'src/components/layout/Layout';
+import { getLoading } from 'src/selectors/credentials';
 import PermissionsColumn from './components/PermissionsColumn';
 
 const columns = ['Name', 'Key', 'Permissions'];

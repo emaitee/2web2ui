@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Page, Panel } from '@sparkpost/matchbox';
 
-import { createApiKey } from 'actions/credentials';
-import Layout from 'components/layout/Layout';
-import { getLoading } from 'selectors/credentials';
+import { createApiKey } from 'src/actions/credentials';
+import Layout from 'src/components/layout/Layout';
+import { getLoading } from 'src/selectors/credentials';
 import ApiKeyForm from './components/ApiKeyForm';
 
 const breadcrumbAction = {

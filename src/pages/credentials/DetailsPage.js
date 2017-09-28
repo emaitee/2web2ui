@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Page, Panel } from '@sparkpost/matchbox';
 
-import { deleteApiKey, listApiKeys, updateApiKey } from 'actions/credentials';
-import Layout from 'components/layout/Layout';
-import DeleteModal from 'components/deleteModal/DeleteModal';
-import { getApiKey, getLoading } from 'selectors/credentials';
+import { deleteApiKey, listApiKeys, updateApiKey } from 'src/actions/credentials';
+import Layout from 'src/components/layout/Layout';
+import DeleteModal from 'src/components/deleteModal/DeleteModal';
+import { getApiKey, getLoading } from 'src/selectors/credentials';
 import ApiKeyForm from './components/ApiKeyForm';
 
 const breadcrumbAction = {
