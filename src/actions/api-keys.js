@@ -1,4 +1,4 @@
-import { formatKeyForRequest } from './helpers/credentials';
+import { formatKeyForRequest } from './helpers/api-keys';
 import sparkpostApiRequest from './helpers/sparkpostApiRequest';
 import { showAlert } from './globalAlert';
 
@@ -87,7 +87,7 @@ export function hideNewApiKey() {
 
 export function listApiKeys({ force } = {}) {
   return (dispatch, getState) => {
-    if (!force && getState().credentials.keysLoaded) {
+    if (!force && getState().apiKeys.keysLoaded) {
       return;
     }
 
@@ -105,7 +105,7 @@ export function listApiKeys({ force } = {}) {
 
 export function listGrants({ force } = {}) {
   return (dispatch, getState) => {
-    if (!force && getState().credentials.grantsLoaded) {
+    if (!force && getState().apiKeys.grantsLoaded) {
       return;
     }
 

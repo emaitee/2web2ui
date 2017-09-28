@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Banner, Page } from '@sparkpost/matchbox';
 
-import { hideNewApiKey, listApiKeys } from 'src/actions/credentials';
+import { hideNewApiKey, listApiKeys } from 'src/actions/api-keys';
 
 import ApiErrorBanner from 'src/components/apiErrorBanner/ApiErrorBanner';
 import TableCollection from 'src/components/collection/TableCollection';
 import Layout from 'src/components/layout/Layout';
-import { getLoading } from 'src/selectors/credentials';
+import { getLoading } from 'src/selectors/api-keys';
 import PermissionsColumn from './components/PermissionsColumn';
 
 const columns = ['Name', 'Key', 'Permissions'];
@@ -17,11 +17,11 @@ const columns = ['Name', 'Key', 'Permissions'];
 const primaryAction = {
   content: 'Create API Key',
   Component: Link,
-  to: '/api-keys/create'
+  to: '/account/api-keys/create'
 };
 
 const getRowData = (key) => [
-  <Link to={`/api-keys/details/${key.id}`}>{key.label}</Link>,
+  <Link to={`/account/api-keys/details/${key.id}`}>{key.label}</Link>,
   <code>{key.short_key} ••••</code>,
   <PermissionsColumn grants={key.grants} />
 ];
@@ -102,7 +102,7 @@ export class ListPage extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { error, keys, newKey } = state.credentials;
+  const { error, keys, newKey } = state.apiKeys;
   return {
     error,
     keys,

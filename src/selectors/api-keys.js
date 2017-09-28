@@ -2,15 +2,15 @@ import _ from 'lodash';
 import { createSelector } from 'reselect';
 
 /*
- * generic credentials selectors
+ * generic apiKeys selectors
  */
-const getApiKeys = (state) => state.credentials.keys;
-const getGrantsArray = (state) => state.credentials.grants;
+const getApiKeys = (state) => state.apiKeys.keys;
+const getGrantsArray = (state) => state.apiKeys.grants;
 const getSubaccounts = (state) => state.subaccounts.list;
 const getApiKeyId = (state, props) => props.match.params.id;
 
-const getKeysLoading = (state) => state.credentials.keysLoading;
-const getGrantsLoading = (state) => state.credentials.grantsLoading;
+const getKeysLoading = (state) => state.apiKeys.keysLoading;
+const getGrantsLoading = (state) => state.apiKeys.grantsLoading;
 const getSubaccountsLoading = (state) => state.subaccounts.listLoading;
 
 export const getApiKey = createSelector(

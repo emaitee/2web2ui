@@ -9,7 +9,7 @@ import {
   billing,
   DashboardPage,
   ProfilePage,
-  credentials,
+  apiKeys,
   reports,
   templates,
   webhooks
@@ -46,9 +46,9 @@ export default () => (
       <ProtectedRoute exact path='/webhooks/create' component={webhooks.CreatePage}/>
       <ProtectedRoute path='/webhooks/details/:id' component={webhooks.DetailsPage}/>
 
-      <ProtectedRoute exact path='/api-keys' component={credentials.ListPage} />
-      <ProtectedRoute exact path='/api-keys/create' component={credentials.CreatePage} />
-      <ProtectedRoute path='/api-keys/details/:id' component={credentials.DetailsPage} />
+      <ProtectedRoute exact path='/account/api-keys' component={apiKeys.ListPage} />
+      <ProtectedRoute exact path='/account/api-keys/create' component={apiKeys.CreatePage} />
+      <ProtectedRoute path='/account/api-keys/details/:id' component={apiKeys.DetailsPage} />
 
       <ProtectedRoute exact path='/account/profile' component={ProfilePage} />
 

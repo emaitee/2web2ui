@@ -3,16 +3,16 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Page, Panel } from '@sparkpost/matchbox';
 
-import { deleteApiKey, listApiKeys, updateApiKey } from 'src/actions/credentials';
+import { deleteApiKey, listApiKeys, updateApiKey } from 'src/actions/api-keys';
 import Layout from 'src/components/layout/Layout';
 import DeleteModal from 'src/components/deleteModal/DeleteModal';
-import { getApiKey, getLoading } from 'src/selectors/credentials';
+import { getApiKey, getLoading } from 'src/selectors/api-keys';
 import ApiKeyForm from './components/ApiKeyForm';
 
 const breadcrumbAction = {
   content: 'API Keys',
   Component: Link,
-  to: '/api-keys'
+  to: '/account/api-keys'
 };
 
 export class CredentialsDetailsPage extends Component {
@@ -39,7 +39,7 @@ export class CredentialsDetailsPage extends Component {
     const { deleteApiKey, history } = this.props;
 
     deleteApiKey().then(() => {
-      history.push('/api-keys');
+      history.push('/account/api-keys');
     });
   };
 
@@ -51,7 +51,7 @@ export class CredentialsDetailsPage extends Component {
     const { updateApiKey, history } = this.props;
 
     return updateApiKey(values).then((res) => {
-      history.push('/api-keys');
+      history.push('/account/api-keys');
     });
   };
 
@@ -83,7 +83,7 @@ export class CredentialsDetailsPage extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const { error, grants, keys } = state.credentials;
+  const { error, grants, keys } = state.apiKeys;
 
   return {
     apiKey: getApiKey(state, props),

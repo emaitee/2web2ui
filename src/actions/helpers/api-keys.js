@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { getGrants } from 'src/selectors/credentials';
+import { getGrants } from 'src/selectors/api-keys';
 
 export function formatKeyForRequest(key, getState) {
   const request = { data: {}};

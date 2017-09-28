@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, change, reduxForm, formValueSelector } from 'redux-form';
 import { Button } from '@sparkpost/matchbox';
 
-import { listGrants } from 'src/actions/credentials';
+import { listGrants } from 'src/actions/api-keys';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import {
   RadioGroup,
@@ -16,7 +16,7 @@ import {
   getInitialGrantsRadio,
   getInitialSubaccount,
   getInitialValues
-} from 'src/selectors/credentials';
+} from 'src/selectors/api-keys';
 import validIpList from '../helpers/validIpList';
 import GrantsCheckboxes from './GrantsCheckboxes';
 

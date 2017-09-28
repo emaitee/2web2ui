@@ -36,7 +36,7 @@ export default [
       },
       {
         label: 'API Keys',
-        to: '/api-keys'
+        to: '/account/api-keys'
       },
       {
         label: 'Profile',

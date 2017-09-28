@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Page, Panel } from '@sparkpost/matchbox';
 
-import { createApiKey } from 'src/actions/credentials';
+import { createApiKey } from 'src/actions/api-keys';
 import Layout from 'src/components/layout/Layout';
-import { getLoading } from 'src/selectors/credentials';
+import { getLoading } from 'src/selectors/api-keys';
 import ApiKeyForm from './components/ApiKeyForm';
 
 const breadcrumbAction = {
   content: 'API Keys',
   Component: Link,
-  to: '/api-keys'
+  to: '/account/api-keys'
 };
 
 export class CreatePage extends React.Component {
@@ -19,7 +19,7 @@ export class CreatePage extends React.Component {
     const { createApiKey, history } = this.props;
 
     return createApiKey(values).then((res) => {
-      history.push('/api-keys');
+      history.push('/account/api-keys');
     });
   };
 
