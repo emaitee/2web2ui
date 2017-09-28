@@ -1,7 +1,7 @@
-import { formatKeyForRequest } from '../credentials';
+import { formatKeyForRequest } from '../api-keys';
 
 const getState = jest.fn(() => ({
-  credentials: {
+  apiKeys: {
     grants: [
       { key: 'message_events/view' },
       { key: 'message_events/write' },

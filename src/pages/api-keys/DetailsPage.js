@@ -15,7 +15,7 @@ const breadcrumbAction = {
   to: '/account/api-keys'
 };
 
-export class CredentialsDetailsPage extends Component {
+export class ApiKeysDetailsPage extends Component {
   static defaultProps = {
     apiKey: {}
   };
@@ -105,5 +105,5 @@ const mapDispatchToProps = (dispatch, props) => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(CredentialsDetailsPage)
+  connect(mapStateToProps, mapDispatchToProps)(ApiKeysDetailsPage)
 );

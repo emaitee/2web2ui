@@ -1,11 +1,11 @@
 import { createMockStore } from '../../__testHelpers__/mockStore';
-import * as Actions from '../credentials';
+import * as Actions from '../api-keys';
 
 jest.mock('../helpers/sparkpostApiRequest', () => jest.fn((action) => action));
 
 describe('listApiKeys()', () => {
   it('dispatches the correct action when no keys are present', () => {
-    const store = createMockStore({ credentials: { keys: []}});
+    const store = createMockStore({ apiKeys: { keys: []}});
 
     store.dispatch(Actions.listApiKeys());
     expect(store.getActions()).toMatchSnapshot();
@@ -13,7 +13,7 @@ describe('listApiKeys()', () => {
 
   it('does not dispatch when keys are already loaded', () => {
     const store = createMockStore({
-      credentials: { keysLoaded: true }
+      apiKeys: { keysLoaded: true }
     });
 
     store.dispatch(Actions.listApiKeys());
@@ -23,7 +23,7 @@ describe('listApiKeys()', () => {
 
 describe('listGrants()', () => {
   it('dispatches the correct action when no grants are present', () => {
-    const store = createMockStore({ credentials: { grants: []}});
+    const store = createMockStore({ apiKeys: { grants: []}});
 
     store.dispatch(Actions.listGrants());
     expect(store.getActions()).toMatchSnapshot();
@@ -31,7 +31,7 @@ describe('listGrants()', () => {
 
   it('does not dispatch when grants are already loaded', () => {
     const store = createMockStore({
-      credentials: { grantsLoaded: true }
+      apiKeys: { grantsLoaded: true }
     });
 
     store.dispatch(Actions.listGrants());
