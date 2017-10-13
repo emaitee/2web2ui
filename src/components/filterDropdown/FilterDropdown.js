@@ -27,9 +27,13 @@ class FilterDropdown extends Component {
     return actions;
   }
 
-  countSelected = () => {
+  countSelected() {
     let count = 0;
-    _.forEach(this.props.values, (value) => !!value && count++);
+    _.forEach(this.props.values, (value) => {
+      if (value) {
+        count++;
+      }
+    });
     return count;
   }
 
@@ -53,7 +57,7 @@ class FilterDropdown extends Component {
     const { displayValue } = this.props;
     const count = this.countSelected();
     const actions = this.buildActions();
-    const prefix = count ? `(${count})` : null;
+    const prefix = count > 0 ? `(${count})` : null;
 
     return (
       <div>
@@ -81,10 +85,7 @@ FilterDropdown.propTypes = {
 
 const mapStateToProps = (state, { formName, namespace }) => {
   const selector = formValueSelector(formName);
-  return {
-    values: selector(state, namespace)
-  };
+  return { values: selector(state, namespace) };
 };
-
 const mapDispatchToProps = { change };
 export default connect(mapStateToProps, mapDispatchToProps)(FilterDropdown);

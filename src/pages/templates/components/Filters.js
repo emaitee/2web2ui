@@ -1,62 +1,52 @@
-/* eslint-disable */
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import _ from 'lodash';
 
-import { Panel, TextField, Button, Grid, Icon, Popover, ActionList } from '@sparkpost/matchbox';
+import { Panel, Grid, Icon } from '@sparkpost/matchbox';
 import { TextFieldWrapper, FilterDropdown } from 'src/components';
 
-import styles from './Filters.module.scss';
-
 const FORMNAME = 'templateFilters';
+const statusOptions = [
+  { content: 'Draft', name: 'draft' },
+  { content: 'Published', name: 'published' }
+];
+const subaccountOptions = [
+  { content: 'Assigned to Master', name: 'master' },
+  { content: 'Shared with all', name: 'all' }
+];
 
-const Filters = () => {
-  const statusOptions = [
-    { content: 'Draft', name: 'draft' },
-    { content: 'Published', name: 'published' }
-  ];
+const Filters = () => (
+  <Panel sectioned>
+    <Grid>
+      <Grid.Column xs={5}>
+        <Field
+          name='search'
+          placeholder='Search by label, ID, or subaccount id'
+          prefix={<Icon name='Search'/>}
+          component={TextFieldWrapper}
+        />
+      </Grid.Column>
+      <Grid.Column>
+        <FilterDropdown
+          formName={FORMNAME}
+          namespace='status'
+          options={statusOptions}
+          displayValue='Status' />
+      </Grid.Column>
+      <Grid.Column>
+        <FilterDropdown
+          formName={FORMNAME}
+          namespace='subaccount'
+          options={subaccountOptions}
+          displayValue='Subaccount' />
+      </Grid.Column>
+    </Grid>
+  </Panel>
+);
 
-  const subaccountOptions = [
-    { content: 'Assigned to Master', name: 'master' },
-    { content: 'Shared with all', name: 'all' }
-  ];
-
-  return (
-    <Panel sectioned>
-      <Grid>
-        <Grid.Column xs={5}>
-          <Field
-            name='search'
-            placeholder='Search by label, ID, or subaccount'
-            prefix={<Icon name='Search'/>}
-            component={TextFieldWrapper}
-          />
-        </Grid.Column>
-        <Grid.Column>
-          <FilterDropdown
-            formName={FORMNAME}
-            namespace='status'
-            options={statusOptions}
-            displayValue='Status' />
-        </Grid.Column>
-        <Grid.Column>
-          <FilterDropdown
-            formName={FORMNAME}
-            namespace='subaccount'
-            options={subaccountOptions}
-            displayValue='Subaccount' />
-        </Grid.Column>
-      </Grid>
-    </Panel>
-  );
-}
-
-const mapStateToProps = (state) => {
-  return {
-    initialValues: {}
-  };
-};
+const mapStateToProps = (state) => ({
+  initialValues: {}
+});
 
 const mapDispatchtoProps = { };
 const formOptions = { form: FORMNAME };
