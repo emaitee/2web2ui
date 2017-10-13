@@ -14,9 +14,10 @@ export default requestHelperFactory({
         meta
       });
 
-      const err = new Error(message);
-      err.response = response;
-      throw err;
+      const error = new Error(message);
+      error.response = response;
+
+      return { error };
     }
 
     dispatch({

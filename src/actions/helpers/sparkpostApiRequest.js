@@ -12,7 +12,9 @@ export let refreshing = false;
 
 // Re-dispatches a given action after we finish refreshing the auth token
 function redispatchAfterRefresh(action, dispatch) {
-  return resolveOnCondition(() => !refreshing).then(() => dispatch(sparkpostRequest(action)));
+  return resolveOnCondition(() => !refreshing)
+    .then(() => dispatch(sparkpostRequest(action)))
+    .catch((error) => ({ error }));
 }
 
 const sparkpostRequest = requestHelperFactory({
@@ -32,6 +34,11 @@ const sparkpostRequest = requestHelperFactory({
       payload: results,
       meta
     });
+
+    if (meta.method.toLowerCase() !== 'get' && !meta.silent) {
+      const msg = _.get(meta, 'notifications.success', 'Great success!');
+      dispatch(showAlert({ type: 'success', message: msg }));
+    }
 
     return results;
   },
@@ -79,7 +86,7 @@ const sparkpostRequest = requestHelperFactory({
     // If we have a 403 or a 401 and we're not refreshing, log the user out silently
     if (response.status === 401 || response.status === 403) {
       dispatch(logout());
-      throw err;
+      return;
     }
 
     // any other API error should automatically fail, to be handled in the reducers/components
@@ -89,11 +96,10 @@ const sparkpostRequest = requestHelperFactory({
       meta
     });
 
-    if (response.status >= 500) {
-      dispatch(showAlert({ type: 'error', message: 'Something went wrong.', details: message }));
+    if (meta.method.toLowerCase() !== 'get' && !meta.silent) {
+      const msg = _.get(meta, 'notifications.fail', 'Something went wrong');
+      dispatch(showAlert({ type: 'error', message: msg, details: message }));
     }
-
-    throw err;
   }
 });
 

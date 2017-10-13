@@ -18,8 +18,6 @@ function defaultOnFail({ types, err, dispatch, meta, action }) {
     payload: { message, response },
     meta
   });
-
-  throw err;
 }
 
 export default function requestFactory({
@@ -37,13 +35,16 @@ export default function requestFactory({
       FAIL: `${type}_FAIL`
     };
 
+    // standardize method included in meta from here on out
+    meta.method = method.toLowerCase();
+
     dispatch({
       type: types.PENDING,
       meta
     });
 
     const httpOptions = {
-      method: method.toLowerCase(),
+      method: meta.method,
       url,
       params,
       headers,
@@ -58,7 +59,10 @@ export default function requestFactory({
         (response) => onSuccess({ types, response, dispatch, meta, action, getState }),
 
         // request failed (remember to throw err in your onFail)
-        (err) => onFail({ types, err, dispatch, meta, action, getState })
+        (err) => {
+          onFail({ types, err, dispatch, meta, action, getState });
+          return { error: err }
+        }
       );
   };
 }

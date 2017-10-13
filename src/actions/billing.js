@@ -135,29 +135,60 @@ export function billingCreate(values) {
 // call this action creator from the "free -> paid" form if account.billing is present
 export function billingUpdate(values) {
 
-  return (dispatch) =>
+  return (dispatch) => {
+
+    dispatch({ type: 'UPDATE_SUBSCRIPTION_SERIES_PENDING' });
 
     // get CORS data for the update billing context
-     dispatch(cors('update-billing'))
+    return dispatch(cors('update-billing'))
 
       // Update Zuora with new CC
-      .then(({ accountKey, token, signature }) => {
+      .then(({ accountKey, token, signature, error }) => {
+        if (error) {
+          throw error;
+        }
         const data = formatUpdateData({ ...values, accountKey });
         return dispatch(updateCreditCard({ data, token, signature }));
       })
 
       // change plan via our API if plan is included
-      .then(() => {
+      .then(({ error } = {}) => {
+        if (error) {
+          throw error;
+        }
         if (values.planpicker) {
           dispatch(updateSubscription(values.planpicker.code));
         }
       })
 
       // sync our db with new Zuora state
-      .then(() => dispatch(syncSubscription()))
+      .then(({ error } = {}) => {
+        if (error) {
+          throw error;
+        }
+        dispatch(syncSubscription())
+      })
 
       // refetch the account
-      .then(() => dispatch(fetchAccount({ include: 'usage,billing' })));
+      .then(({ error } = {}) => {
+        if (error) {
+          throw error;
+        }
+        dispatch(fetchAccount({ include: 'usage,billing' }))
+      })
+
+      .then(({ error } = {}) => {
+        if (error) {
+          throw error;
+        }
+        dispatch({ type: 'UPDATE_SUBSCRIPTION_SEQUENCE_SUCCESS' });
+      })
+
+      // do something if the chain failed
+      .catch((err) => {
+        dispatch({ type: 'UPDATE_SUBSCRIPTION_SEQUENCE_FAIL', payload: err });
+      });
+  }
 }
 
 /**
