@@ -1,7 +1,7 @@
-/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { Field, change, formValueSelector } from 'redux-form';
 
 import { TextField, Icon, Popover, ActionList } from '@sparkpost/matchbox';
@@ -13,7 +13,24 @@ class FilterDropdown extends Component {
   handleActionClick(name) {
     const { formName, change, namespace, values } = this.props;
     const value = values && values[name] !== undefined ? values[name] : false;
-    change(formName, `${namespace}.${name}`, !value)
+    change(formName, `${namespace}.${name}`, !value);
+  }
+
+  buildActions = () => {
+    const { options, values } = this.props;
+    const actions = options.map((option) => ({
+      ...option,
+      onClick: () => this.handleActionClick(option.name),
+      selected: values && !!values[option.name]
+    }));
+
+    return actions;
+  }
+
+  countSelected = () => {
+    let count = 0;
+    _.forEach(this.props.values, (value) => !!value && count++);
+    return count;
   }
 
   renderCheckboxes() {
@@ -21,7 +38,7 @@ class FilterDropdown extends Component {
 
     return options.map(({ name }) => (
       <Field
-        // className={styles.hidden}
+        className={styles.hidden}
         key={name}
         type='checkbox'
         component='input'
@@ -32,29 +49,16 @@ class FilterDropdown extends Component {
     ));
   }
 
-  buildActions = () => {
-    const { options, values } = this.props;
-    console.log('buildActions')
-    const actions = options.map((option) => {
-      const value = values && values[option.name] !== undefined ? values[option.name] : false
-      console.log(value)
-      return {
-        ...option,
-        onClick: () => this.handleActionClick(option.name),
-        highlighted: values && !!values[option.name]
-      }
-    });
-
-    return actions;
-  }
-
   render() {
-    const { options, triggerValue } = this.props;
+    const { displayValue } = this.props;
+    const count = this.countSelected();
     const actions = this.buildActions();
+    const prefix = count ? `(${count})` : null;
+
     return (
       <div>
         <Popover
-          trigger={<TextField prefix='(1)' value={triggerValue} readOnly suffix={<Icon name='CaretDown'/>} />}>
+          trigger={<TextField prefix={prefix} value={displayValue} readOnly suffix={<Icon name='CaretDown'/>} />}>
           <ActionList actions={actions} />
         </Popover>
         {this.renderCheckboxes()}
@@ -65,15 +69,22 @@ class FilterDropdown extends Component {
 
 FilterDropdown.propTypes = {
   formName: PropTypes.string.isRequired,
-  namespace: PropTypes.string.isRequired
+  namespace: PropTypes.string.isRequired,
+  displayValue: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      content: PropTypes.string,
+      name: PropTypes.string
+    })
+  ).isRequired
 };
 
 const mapStateToProps = (state, { formName, namespace }) => {
   const selector = formValueSelector(formName);
   return {
     values: selector(state, namespace)
-  }
-}
+  };
+};
 
 const mapDispatchToProps = { change };
 export default connect(mapStateToProps, mapDispatchToProps)(FilterDropdown);

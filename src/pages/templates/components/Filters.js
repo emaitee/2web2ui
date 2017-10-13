@@ -29,6 +29,7 @@ const Filters = () => {
           <Field
             name='search'
             placeholder='Search by label, ID, or subaccount'
+            prefix={<Icon name='Search'/>}
             component={TextFieldWrapper}
           />
         </Grid.Column>
@@ -37,14 +38,14 @@ const Filters = () => {
             formName={FORMNAME}
             namespace='status'
             options={statusOptions}
-            triggerValue='Status' />
+            displayValue='Status' />
         </Grid.Column>
         <Grid.Column>
-          {/* <FilterDropdown
+          <FilterDropdown
             formName={FORMNAME}
             namespace='subaccount'
             options={subaccountOptions}
-            triggerValue='Subaccount' /> */}
+            displayValue='Subaccount' />
         </Grid.Column>
       </Grid>
     </Panel>
