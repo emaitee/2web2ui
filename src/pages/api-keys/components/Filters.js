@@ -5,34 +5,22 @@ import { reduxForm, Field } from 'redux-form';
 import { Panel, Grid, Icon } from '@sparkpost/matchbox';
 import { TextFieldWrapper, FilterDropdown } from 'src/components';
 
-const FORMNAME = 'templateFilters';
-const statusOptions = [
-  { content: 'Draft', name: 'draft' },
-  { content: 'Published', name: 'published' }
-];
+const FORMNAME = 'apiKeysFilters';
 const subaccountOptions = [
   { content: 'Assigned to Master', name: 'master' },
-  { content: 'Assigned to Subaccount', name: 'subaccount' },
-  { content: 'Shared with all', name: 'all' }
+  { content: 'Assigned to Subaccount', name: 'subaccount' }
 ];
 
 const Filters = () => (
   <Panel sectioned>
     <Grid>
-      <Grid.Column xs={5}>
+      <Grid.Column xs={8}>
         <Field
           name='search'
-          placeholder='Search by label, ID, or subaccount id'
+          placeholder='Search by name, user, key, or subaccount ID'
           prefix={<Icon name='Search'/>}
           component={TextFieldWrapper}
         />
-      </Grid.Column>
-      <Grid.Column>
-        <FilterDropdown
-          formName={FORMNAME}
-          namespace='status'
-          options={statusOptions}
-          displayValue='Status' />
       </Grid.Column>
       <Grid.Column>
         <FilterDropdown

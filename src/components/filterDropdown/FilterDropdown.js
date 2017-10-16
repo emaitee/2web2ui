@@ -10,17 +10,18 @@ import styles from './FilterDropdown.module.scss';
 
 class FilterDropdown extends Component {
 
-  handleActionClick(name) {
+  handleActionClick(e, name) {
     const { formName, change, namespace, values } = this.props;
     const value = values && values[name] !== undefined ? values[name] : false;
     change(formName, `${namespace}.${name}`, !value);
+    e.stopPropagation();
   }
 
   buildActions = () => {
     const { options, values } = this.props;
     const actions = options.map((option) => ({
       ...option,
-      onClick: () => this.handleActionClick(option.name),
+      onClick: (e) => this.handleActionClick(e, option.name),
       selected: values && !!values[option.name]
     }));
 
