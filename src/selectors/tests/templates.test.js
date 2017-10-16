@@ -28,14 +28,17 @@ describe('Filter Templates Selector', () => {
       list: [
         {
           name: 'Zebra',
-          id: 'Z',
           published: true,
           subaccount_id: '1'
         },
         {
           name: 'Ape',
-          id: 'A',
           published: false
+        },
+        {
+          name: 'shared',
+          published: false,
+          shared_with_subaccounts: true
         },
       ]
     },

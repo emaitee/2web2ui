@@ -3,9 +3,13 @@
 exports[`Filter Templates Selector filters draft templates 1`] = `
 Array [
   Object {
-    "id": "A",
     "name": "Ape",
     "published": false,
+  },
+  Object {
+    "name": "shared",
+    "published": false,
+    "shared_with_subaccounts": true,
   },
 ]
 `;
@@ -13,7 +17,6 @@ Array [
 exports[`Filter Templates Selector filters published templates 1`] = `
 Array [
   Object {
-    "id": "Z",
     "name": "Zebra",
     "published": true,
     "subaccount_id": "1",
@@ -21,12 +24,19 @@ Array [
 ]
 `;
 
-exports[`Filter Templates Selector filters subaccount all 1`] = `Array []`;
+exports[`Filter Templates Selector filters subaccount all 1`] = `
+Array [
+  Object {
+    "name": "shared",
+    "published": false,
+    "shared_with_subaccounts": true,
+  },
+]
+`;
 
 exports[`Filter Templates Selector filters subaccount assigned 1`] = `
 Array [
   Object {
-    "id": "Z",
     "name": "Zebra",
     "published": true,
     "subaccount_id": "1",
@@ -37,7 +47,6 @@ Array [
 exports[`Filter Templates Selector filters subaccount master 1`] = `
 Array [
   Object {
-    "id": "A",
     "name": "Ape",
     "published": false,
   },
@@ -47,7 +56,6 @@ Array [
 exports[`Filter Templates Selector returns searched list 1`] = `
 Array [
   Object {
-    "id": "Z",
     "name": "Zebra",
     "published": true,
     "subaccount_id": "1",
@@ -58,15 +66,18 @@ Array [
 exports[`Filter Templates Selector returns unfiltered list 1`] = `
 Array [
   Object {
-    "id": "Z",
     "name": "Zebra",
     "published": true,
     "subaccount_id": "1",
   },
   Object {
-    "id": "A",
     "name": "Ape",
     "published": false,
+  },
+  Object {
+    "name": "shared",
+    "published": false,
+    "shared_with_subaccounts": true,
   },
 ]
 `;
