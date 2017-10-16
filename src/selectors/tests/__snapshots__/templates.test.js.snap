@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Filter Templates Selector filters draft templates 1`] = `
+Array [
+  Object {
+    "id": "A",
+    "name": "Ape",
+    "published": false,
+  },
+]
+`;
+
+exports[`Filter Templates Selector filters published templates 1`] = `
+Array [
+  Object {
+    "id": "Z",
+    "name": "Zebra",
+    "published": true,
+    "subaccount_id": "1",
+  },
+]
+`;
+
+exports[`Filter Templates Selector filters subaccount all 1`] = `Array []`;
+
+exports[`Filter Templates Selector filters subaccount assigned 1`] = `
+Array [
+  Object {
+    "id": "Z",
+    "name": "Zebra",
+    "published": true,
+    "subaccount_id": "1",
+  },
+]
+`;
+
+exports[`Filter Templates Selector filters subaccount master 1`] = `
+Array [
+  Object {
+    "id": "A",
+    "name": "Ape",
+    "published": false,
+  },
+]
+`;
+
+exports[`Filter Templates Selector returns searched list 1`] = `
+Array [
+  Object {
+    "id": "Z",
+    "name": "Zebra",
+    "published": true,
+    "subaccount_id": "1",
+  },
+]
+`;
+
+exports[`Filter Templates Selector returns unfiltered list 1`] = `
+Array [
+  Object {
+    "id": "Z",
+    "name": "Zebra",
+    "published": true,
+    "subaccount_id": "1",
+  },
+  Object {
+    "id": "A",
+    "name": "Ape",
+    "published": false,
+  },
+]
+`;
+
+exports[`Templates by id Selector returns empty draft and published 1`] = `
+Object {
+  "draft": Object {},
+  "published": Object {},
+}
+`;
+
+exports[`Templates by id Selector returns template 1`] = `
+Object {
+  "name": "Ape",
+}
+`;
