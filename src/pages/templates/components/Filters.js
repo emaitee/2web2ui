@@ -5,7 +5,7 @@ import { reduxForm, Field } from 'redux-form';
 import { Panel, Grid, Icon } from '@sparkpost/matchbox';
 import { TextFieldWrapper, FilterDropdown } from 'src/components';
 
-const FORMNAME = 'templateFilters';
+const formName = 'templateFilters';
 const statusOptions = [
   { content: 'Draft', name: 'draft' },
   { content: 'Published', name: 'published' }
@@ -29,14 +29,14 @@ const Filters = () => (
       </Grid.Column>
       <Grid.Column>
         <FilterDropdown
-          formName={FORMNAME}
+          formName={formName}
           namespace='status'
           options={statusOptions}
           displayValue='Status' />
       </Grid.Column>
       <Grid.Column>
         <FilterDropdown
-          formName={FORMNAME}
+          formName={formName}
           namespace='subaccount'
           options={subaccountOptions}
           displayValue='Subaccount' />
@@ -49,6 +49,5 @@ const mapStateToProps = (state) => ({
   initialValues: {}
 });
 
-const mapDispatchtoProps = { };
-const formOptions = { form: FORMNAME };
-export default connect(mapStateToProps, mapDispatchtoProps)(reduxForm(formOptions)(Filters));
+const formOptions = { form: formName };
+export default connect(mapStateToProps, {})(reduxForm(formOptions)(Filters));
