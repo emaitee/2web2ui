@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import qs from 'query-string';
+import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
 import Pagination from './Pagination';
+import CollectionFilter from './Filter';
+
+import { objectSortMatch, getObjectPattern } from 'src/helpers/sortMatch';
 
 const PassThroughWrapper = (props) => props.children;
 
@@ -39,7 +43,16 @@ class Collection extends Component {
     const { perPage, currentPage } = this.state;
     const { rows } = this.props;
     const currentIndex = (currentPage - 1) * perPage;
-    return rows.slice(currentIndex, currentIndex + perPage);
+    let rowsToSlice = rows;
+    if (this.state.filtering) {
+      rowsToSlice = objectSortMatch({
+        items: rows,
+        pattern: this.state.filterPattern,
+        objectPattern: this.state.filterObjectPattern,
+        getter: (key) => `${key.name} ${key.key}`
+      });
+    }
+    return rowsToSlice.slice(currentIndex, currentIndex + perPage);
   }
 
   renderPagination() {
@@ -60,6 +73,21 @@ class Collection extends Component {
     );
   }
 
+  handleFilterChange = _.debounce((value) => {
+    const update = {
+      currentPage: 1,
+      filtering: false
+    };
+
+    if (value) {
+      update.filtering = true;
+      update.filterPattern = value;
+      update.filterObjectPattern = getObjectPattern(value);
+    }
+
+    this.setState(update);
+  }, 500);
+
   render() {
     const {
       rowComponent: RowComponent,
@@ -71,6 +99,7 @@ class Collection extends Component {
 
     return (
       <div>
+        <CollectionFilter onChange={this.handleFilterChange} />
         <OuterWrapper>
           {headerComponent}
           <BodyWrapper>
