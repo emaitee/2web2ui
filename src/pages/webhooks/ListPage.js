@@ -40,6 +40,7 @@ class WebhooksList extends Component {
         rows={webhooks}
         getRowData={getRowData}
         pagination={true}
+        showFilterBox={true}
       />
     );
   }

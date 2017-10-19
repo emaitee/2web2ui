@@ -1,20 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Panel, Grid, TextField } from '@sparkpost/matchbox';
 
-export default class CollectionFilter extends Component {
-  handleChange = (e) => {
-    this.props.onChange(e.target.value);
+export default function CollectionFilter({ onChange }) {
+  function handleChange(e) {
+    onChange(e.target.value);
   }
 
-  render() {
-    return (
-      <Panel>
-        <Grid>
-          <Grid.Column>
-            <TextField onChange={this.handleChange} />
-          </Grid.Column>
-        </Grid>
-      </Panel>
-    );
-  }
+  return (
+    <Panel>
+      <Grid>
+        <Grid.Column>
+          <TextField onChange={handleChange} />
+        </Grid.Column>
+      </Grid>
+    </Panel>
+  );
 }

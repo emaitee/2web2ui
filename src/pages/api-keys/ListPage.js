@@ -3,13 +3,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Banner, Page } from '@sparkpost/matchbox';
-// import config from 'src/config';
 
 import { hideNewApiKey, listApiKeys } from 'src/actions/api-keys';
 
 import { Layout, TableCollection, ApiErrorBanner } from 'src/components';
-import { getLoading, getFilteredKeys } from 'src/selectors/api-keys';
-// import Filters from './components/Filters';
+import { getLoading } from 'src/selectors/api-keys';
 import { getRowData, columns } from './tableConfig';
 
 const primaryAction = {
@@ -64,6 +62,8 @@ export class ListPage extends Component {
         getRowData={getRowData}
         pagination={true}
         rows={keys}
+        showFilterBox={true}
+        filterKeyMap={{ name: 'label', key: 'short_key' }}
       />
     );
   }
@@ -85,7 +85,6 @@ export class ListPage extends Component {
       <Layout.App loading={loading}>
         <Page primaryAction={primaryAction} title="API Keys" />
         {newKey && this.renderBanner()}
-        {/* {!error && count > config.filters.minCount && <Filters/>} */}
         {!error && count > 0 && this.renderCollection()}
         {error && this.renderError()}
       </Layout.App>
@@ -97,7 +96,7 @@ const mapStateToProps = (state) => {
   const { error, keys, newKey } = state.apiKeys;
   return {
     count: keys.length,
-    keys: getFilteredKeys(state),
+    keys,
     loading: getLoading(state),
     error,
     newKey

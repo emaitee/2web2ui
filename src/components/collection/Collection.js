@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import qs from 'query-string';
 import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
-import Pagination from './Pagination';
+import Pagination, { defaultPerPageButtons } from './Pagination';
 import CollectionFilter from './Filter';
-
-import { objectSortMatch, getObjectPattern } from 'src/helpers/sortMatch';
+import { objectSortMatch } from 'src/helpers/sortMatch';
 
 const PassThroughWrapper = (props) => props.children;
 
 class Collection extends Component {
+
   state = {};
 
   componentDidMount() {
@@ -29,6 +29,25 @@ class Collection extends Component {
     this.setState({ perPage, currentPage: 1 }, this.maybeUpdateQueryString);
   }
 
+  handleFilterChange = _.debounce((pattern) => {
+    const { rows, filterKeyMap } = this.props;
+    const update = {
+      currentPage: 1,
+      filteredRows: null
+    };
+
+    if (pattern) {
+      update.filteredRows = objectSortMatch({
+        items: rows,
+        pattern,
+        getter: (key) => `${key.name} ${key.key}`, // TODO: fix this
+        keyMap: filterKeyMap
+      });
+    }
+
+    this.setState(update);
+  }, 500);
+
   maybeUpdateQueryString() {
     const { currentPage, perPage } = this.state;
     const { search, pathname } = this.props.location;
@@ -40,30 +59,29 @@ class Collection extends Component {
   }
 
   getVisibleRows() {
-    const { perPage, currentPage } = this.state;
+    const { perPage, currentPage, filteredRows } = this.state;
     const { rows } = this.props;
     const currentIndex = (currentPage - 1) * perPage;
-    let rowsToSlice = rows;
-    if (this.state.filtering) {
-      rowsToSlice = objectSortMatch({
-        items: rows,
-        pattern: this.state.filterPattern,
-        objectPattern: this.state.filterObjectPattern,
-        getter: (key) => `${key.name} ${key.key}`
-      });
+    return (filteredRows || rows).slice(currentIndex, currentIndex + perPage);
+  }
+
+  renderFilterBox() {
+    const { showFilterBox, rows, perPageButtons = defaultPerPageButtons } = this.props;
+    if (showFilterBox && (rows.length > Math.min(...perPageButtons))) {
+      return <CollectionFilter onChange={this.handleFilterChange} />;
     }
-    return rowsToSlice.slice(currentIndex, currentIndex + perPage);
+    return null;
   }
 
   renderPagination() {
     const { rows, perPageButtons, pagination } = this.props;
-    const { currentPage, perPage } = this.state;
+    const { currentPage, perPage, filteredRows } = this.state;
 
     if (!pagination || !currentPage) { return null; }
 
     return (
       <Pagination
-        data={rows}
+        data={filteredRows || rows}
         perPage={perPage}
         currentPage={currentPage}
         perPageButtons={perPageButtons}
@@ -72,21 +90,6 @@ class Collection extends Component {
       />
     );
   }
-
-  handleFilterChange = _.debounce((value) => {
-    const update = {
-      currentPage: 1,
-      filtering: false
-    };
-
-    if (value) {
-      update.filtering = true;
-      update.filterPattern = value;
-      update.filterObjectPattern = getObjectPattern(value);
-    }
-
-    this.setState(update);
-  }, 500);
 
   render() {
     const {
@@ -99,7 +102,7 @@ class Collection extends Component {
 
     return (
       <div>
-        <CollectionFilter onChange={this.handleFilterChange} />
+        {this.renderFilterBox()}
         <OuterWrapper>
           {headerComponent}
           <BodyWrapper>
