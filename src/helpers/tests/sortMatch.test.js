@@ -43,31 +43,10 @@ describe('Helper: sortMatch', () => {
     it('should match objects as the highest match', () => {
       const sorted = objectSortMatch({
         items: testList,
-        pattern: 'Don Quixote',
-        objectPattern: { author: 'Mark Twain' },
+        pattern: 'author:"Mark Twain"',
         getter: titleGetter
       });
       expect(sorted[0].title).toEqual('The Adventures of Huckleberry Finn');
-    });
-
-    it(`shouldn't match by object if any of the given keys don't match`, () => {
-      const sorted = objectSortMatch({
-        items: testList,
-        pattern: 'Don Quixote',
-        objectPattern: { author: 'Mark Twain', fruit: 'apple' },
-        getter: titleGetter
-      });
-      expect(sorted[0].title).toEqual('Don Quixote');
-    });
-
-    it(`shouldn't match by object if any of the values don't match`, () => {
-      const sorted = objectSortMatch({
-        items: testList,
-        pattern: 'Don Quixote',
-        objectPattern: { author: 'Mark Twain', title: 'The Celebrated Jumping Frog of Calaveras County' },
-        getter: titleGetter
-      });
-      expect(sorted[0].title).toEqual('Don Quixote');
     });
 
   });

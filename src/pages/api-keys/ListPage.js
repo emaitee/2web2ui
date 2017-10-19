@@ -8,7 +8,7 @@ import { hideNewApiKey, listApiKeys } from 'src/actions/api-keys';
 
 import { Layout, TableCollection, ApiErrorBanner } from 'src/components';
 import { getLoading } from 'src/selectors/api-keys';
-import { getRowData, columns } from './tableConfig';
+import { getRowData, columns, filterBoxConfig } from './tableConfig';
 
 const primaryAction = {
   content: 'Create API Key',
@@ -62,8 +62,7 @@ export class ListPage extends Component {
         getRowData={getRowData}
         pagination={true}
         rows={keys}
-        showFilterBox={true}
-        filterKeyMap={{ name: 'label', key: 'short_key' }}
+        filterBox={filterBoxConfig}
       />
     );
   }

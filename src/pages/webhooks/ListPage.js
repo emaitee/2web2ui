@@ -14,6 +14,11 @@ const getRowData = ({ id, name, target }) => {
   const nameLink = <Link to={`/webhooks/details/${id}`}>{name}</Link>;
   return [nameLink, id, target];
 };
+const filterBoxConfig = {
+  show: true,
+  compareKeys: ['name', 'id', 'target']
+};
+
 
 class WebhooksList extends Component {
 
@@ -40,7 +45,7 @@ class WebhooksList extends Component {
         rows={webhooks}
         getRowData={getRowData}
         pagination={true}
-        showFilterBox={true}
+        filterBox={filterBoxConfig}
       />
     );
   }

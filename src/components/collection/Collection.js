@@ -9,7 +9,6 @@ import { objectSortMatch } from 'src/helpers/sortMatch';
 const PassThroughWrapper = (props) => props.children;
 
 class Collection extends Component {
-
   state = {};
 
   componentDidMount() {
@@ -30,7 +29,8 @@ class Collection extends Component {
   }
 
   handleFilterChange = _.debounce((pattern) => {
-    const { rows, filterKeyMap } = this.props;
+    const { rows, filterBox } = this.props;
+    const { keyMap, compareKeys = []} = filterBox;
     const update = {
       currentPage: 1,
       filteredRows: null
@@ -40,8 +40,8 @@ class Collection extends Component {
       update.filteredRows = objectSortMatch({
         items: rows,
         pattern,
-        getter: (key) => `${key.name} ${key.key}`, // TODO: fix this
-        keyMap: filterKeyMap
+        getter: (item) => compareKeys.map((key) => item[key]).join(' '),
+        keyMap
       });
     }
 
@@ -66,8 +66,8 @@ class Collection extends Component {
   }
 
   renderFilterBox() {
-    const { showFilterBox, rows, perPageButtons = defaultPerPageButtons } = this.props;
-    if (showFilterBox && (rows.length > Math.min(...perPageButtons))) {
+    const { filterBox = {}, rows, perPageButtons = defaultPerPageButtons } = this.props;
+    if (filterBox.show && (rows.length > Math.min(...perPageButtons))) {
       return <CollectionFilter onChange={this.handleFilterChange} />;
     }
     return null;

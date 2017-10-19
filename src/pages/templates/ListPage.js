@@ -9,7 +9,7 @@ import { getTemplates, getfilterTemplates } from 'src/selectors/templates';
 // Components
 import { Layout, TableCollection, ApiErrorBanner } from 'src/components';
 import { Page, EmptyState } from '@sparkpost/matchbox';
-import { getRowData, columns } from './tableConfig';
+import { getRowData, columns, filterBoxConfig } from './tableConfig';
 
 const primaryAction = {
   content: 'Create Template',
@@ -40,7 +40,7 @@ export class ListPage extends Component {
         rows={this.props.templates}
         getRowData={getRowData}
         pagination
-        showFilterBox
+        filterBox={filterBoxConfig}
       />
     );
   }
