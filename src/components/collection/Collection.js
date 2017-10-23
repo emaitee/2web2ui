@@ -8,6 +8,25 @@ import { objectSortMatch } from 'src/helpers/sortMatch';
 
 const PassThroughWrapper = (props) => props.children;
 
+function highlightTopMatches(list, threshold) {
+  if (threshold >= list.length) {
+    threshold = list.length - 1;
+  }
+
+  let count = 0;
+  for (let i = 0; i <= threshold; i++) {
+    if (list[i].sortMatchScore === list[0].sortMatchScore) {
+      count++;
+    }
+  }
+  if (count <= threshold) {
+    for (let i = 0; i < count; i++) {
+      list[i].topMatch = true;
+    }
+  }
+  return list;
+}
+
 class Collection extends Component {
   state = {};
 
@@ -37,12 +56,12 @@ class Collection extends Component {
     };
 
     if (pattern) {
-      update.filteredRows = objectSortMatch({
+      update.filteredRows = highlightTopMatches(objectSortMatch({
         items: rows,
         pattern,
         getter: (item) => compareKeys.map((key) => item[key]).join(' '),
         keyMap
-      });
+      }), 8);
     }
 
     this.setState(update);
