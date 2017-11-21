@@ -17,7 +17,8 @@ export default (state = initialState, action) => {
         token,
         username,
         refreshToken,
-        loggedIn: true
+        loggedIn: true,
+        refreshing: false
       };
     }
 
@@ -28,6 +29,10 @@ export default (state = initialState, action) => {
 
     case 'LOGOUT': {
       return { loggedIn: false };
+    }
+
+    case 'ATTEMPTING_REFRESH': {
+      return { ...state, refreshing: true };
     }
 
     default: {

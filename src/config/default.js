@@ -15,7 +15,8 @@ const config = {
     headers: {
       Authorization: 'Basic bXN5c1dlYlVJOmZhODZkNzJlLTYyODctNDUxMy1hZTdmLWVjOGM4ZmEwZDc2Ng==',
       'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    },
+    maxRefreshRetries: 3
   },
   cardTypes: [
     { paymentFormat: 'visa', apiFormat: 'Visa' },

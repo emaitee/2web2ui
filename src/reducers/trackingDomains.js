@@ -11,7 +11,7 @@ export default (state = initialState, { type, payload, meta }) => {
       return { ...state, listLoading: true, error: null };
 
     case 'LIST_TRACKING_DOMAINS_SUCCESS':
-      return { ...state, listLoading: false, list: payload };
+      return { ...state, listLoading: false, list: payload.result };
 
     case 'LIST_TRACKING_DOMAINS_FAIL':
       return { ...state, listLoading: false, error: { payload, meta, resource: 'tracking domains' }};

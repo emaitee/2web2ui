@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import asyncDispatcher from 'src/middleware/asyncDispatcher';
 import config from './config';
 import { unregister } from './helpers/registerServiceWorker';
 import ErrorTracker from './helpers/errorTracker';
@@ -17,7 +18,7 @@ const composeEnhancers = process.env.NODE_ENV !== 'production' && window.__REDUX
 const store = createStore(
   rootReducer,
   composeEnhancers(
-    applyMiddleware(thunk),
+    applyMiddleware(asyncDispatcher, thunk),
     applyMiddleware(ErrorTracker.middleware)
   )
 );

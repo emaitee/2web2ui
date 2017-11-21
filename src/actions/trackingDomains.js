@@ -1,14 +1,19 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
+import { asyncSparkpostHelper } from 'src/helpers/http/sparkpost';
 import _ from 'lodash';
 
 export function listTrackingDomains() {
-  return sparkpostApiRequest({
+  return {
     type: 'LIST_TRACKING_DOMAINS',
-    meta: {
+    async: asyncSparkpostHelper({
       method: 'GET',
       url: '/tracking-domains'
+    }),
+    payload: { test: 'static payload' },
+    meta: {
+      test: 'test meta'
     }
-  });
+  };
 }
 
 export function createTrackingDomain({ subaccount = null, ...data }) {

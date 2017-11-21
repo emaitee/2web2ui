@@ -81,8 +81,12 @@ export function confirmPassword(username, password) {
   };
 }
 
-export function refresh(token, refreshToken) {
-  const newCookie = authCookie.merge({ access_token: token, refresh_token: refreshToken });
+export function beginRefresh(refreshToken) {
+  return { type: 'ATTEMPTING_REFRESH', payload: refreshToken };
+}
+
+export function refresh(access_token, refresh_token) {
+  const newCookie = authCookie.merge({ access_token, refresh_token });
   return login(newCookie);
 }
 
