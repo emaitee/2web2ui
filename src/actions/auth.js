@@ -1,7 +1,6 @@
-import { sparkpostLogin } from '../helpers/http';
+import { sparkpostLogin, sparkpostRefresh } from 'src/helpers/http';
 import authCookie from '../helpers/authCookie';
 import { initializeAccessControl } from './accessControl';
-
 
 export function login(authData) {
   return (dispatch) => {
@@ -15,7 +14,6 @@ export function login(authData) {
 }
 
 export function authenticate(username, password, rememberMe = false) {
-  // return a thunk
   return (dispatch, getState) => {
     const { loggedIn } = getState().auth;
 
@@ -39,8 +37,6 @@ export function authenticate(username, password, rememberMe = false) {
         const { response = {}} = err;
         const { data = {}} = response;
         const { error_description: errorDescription } = data;
-
-        // TODO: handle a timeout error better
 
         dispatch({
           type: 'LOGIN_FAIL',
@@ -81,13 +77,29 @@ export function confirmPassword(username, password) {
   };
 }
 
-export function beginRefresh(refreshToken) {
-  return { type: 'ATTEMPTING_REFRESH', payload: refreshToken };
-}
+/**
+ * Attempts to refresh the auth token for
+ * the SparkPost API
+ */
+export function refresh() {
+  return (dispatch, getState) => {
+    const { auth = {}} = getState();
 
-export function refresh(access_token, refresh_token) {
-  const newCookie = authCookie.merge({ access_token, refresh_token });
-  return login(newCookie);
+    if (auth.refreshing) {
+      return;
+    }
+
+    dispatch({ type: 'ATTEMPTING_REFRESH', payload: auth.refreshToken });
+
+    return sparkpostRefresh(auth.refreshToken)
+      // save new token results in cookie and store
+      .then(({ data: { access_token, refresh_token }} = {}) => {
+        const newCookie = authCookie.merge({ access_token, refresh_token });
+        return dispatch(login(newCookie));
+      })
+      // log out on any failure in this process
+      .catch(() => dispatch(logout()));
+  };
 }
 
 export function logout() {

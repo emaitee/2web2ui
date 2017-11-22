@@ -1,5 +1,5 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
-import { asyncSparkpostHelper } from 'src/helpers/http/sparkpost';
+import { asyncSparkpostHelper } from 'src/helpers/http';
 import _ from 'lodash';
 
 export function listTrackingDomains() {

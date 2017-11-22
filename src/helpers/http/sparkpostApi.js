@@ -1,13 +1,19 @@
 import { sparkpost as sparkpostAxios } from 'src/helpers/axiosInstances';
 import attemptRefresh from 'src/helpers/http/sparkpostRefresh';
 import { resolveOnCondition } from 'src/helpers/promise';
-import { logout } from 'src/actions/auth';
+import { refresh, logout } from 'src/actions/auth';
 import config from 'src/config';
 import _ from 'lodash';
 
 const maxRetries = _.get(config, 'authentication.maxRefreshRetries', 3);
 
-function retryAfterRefresh(options) {
+/**
+ * Promise-based retry logic, retries callSparkpostApi call
+ * when the auth.refreshing flag goes back to false
+ *
+ * @param {Object} options - same options that callSparkpostApi requires
+ */
+export function retryAfterRefresh(options) {
   return resolveOnCondition(() => !options.getState().auth.refreshing)
     .then(() => callSparkpostApi(options));
 }
@@ -18,6 +24,7 @@ function retryAfterRefresh(options) {
  * __callSparkpostApi__ function which kicks off the HTTP request cycle
  *
  * @param {Object} request
+ * @return {Function} - "Thunk"
  */
 export function asyncSparkpostHelper(request) {
   return (dispatch, getState) => callSparkpostApi({ request, dispatch, getState });
@@ -30,13 +37,13 @@ export function asyncSparkpostHelper(request) {
  * during certain error cases
  *
  * @param {Object} options
- * @param {Object} options.request
- * @param {Function} options.dispatch
- * @param {Function} options.getState
+ * @param {Object} options.request - Axios request object
+ * @param {Function} options.dispatch - Redux dispatcher
+ * @param {Function} options.getState - Redux state accessor
+ * @param {Number|undefined} options.retries - number representing how many times this request has been retried
  */
 export function callSparkpostApi(options) {
   const { dispatch, getState, request, retries = 0 } = options;
-  // TODO: throw error if dispatch, getState, or request is undefined?
   const { auth = {}} = getState();
 
   // add Authorization header if user is logged in
@@ -49,8 +56,8 @@ export function callSparkpostApi(options) {
     return retryAfterRefresh(options);
   }
 
+  // make the HTTP call
   return sparkpostAxios(request)
-
     // transform success response
     .then(({ data: { results }}) => results)
 
@@ -61,12 +68,7 @@ export function callSparkpostApi(options) {
 
       // if we have a 401 and a refresh token is present, attempt a token refresh
       if (response.status === 401 && auth.refreshToken && retries < maxRetries) {
-        // if we aren't already refreshing, attempt a refresh (log out on fail)
-        if (!auth.refreshing) {
-          attemptRefresh(auth.refreshToken, options).catch(() => dispatch(logout()));
-        }
-
-        // retry this request after the token is refreshed
+        dispatch(refresh());
         return retryAfterRefresh({ ...options, retries: options.retries + 1 });
       }
 
