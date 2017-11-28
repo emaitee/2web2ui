@@ -1,29 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import asyncDispatcher from 'src/middleware/asyncDispatcher';
-import config from './config';
-import { unregister } from './helpers/registerServiceWorker';
-import ErrorTracker from './helpers/errorTracker';
-import rootReducer from './reducers';
+import { unregister } from 'src/helpers/registerServiceWorker';
+import ErrorTracker from 'src/helpers/errorTracker';
+import store from 'src/store';
+import config from 'src/config';
 
 import './critical.scss';
 import './index.scss';
 import App from './App';
-
-// necessary for redux devtools in development mode only
-const composeEnhancers = process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // eslint-disable-line no-mixed-operators
-const store = createStore(
-  rootReducer,
-  composeEnhancers(
-    applyMiddleware(asyncDispatcher, thunk),
-    applyMiddleware(ErrorTracker.middleware)
-  )
-);
-
-ErrorTracker.install(config, store);
 
 render(
   <Provider store={store}>
@@ -35,6 +20,9 @@ unregister(); // our bundle is currently too big to be added to SW cache, causin
 
 // Kill loading screen
 document.getElementById('critical').className += ' ready';
+
+// Set up the Sentry error tracker
+ErrorTracker.install(config, store);
 
 /**
  * Track unhandled promise rejects
