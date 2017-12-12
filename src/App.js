@@ -6,12 +6,36 @@ import {
   BrowserRouter as Router,
   Route,
   Redirect,
-  Switch
+  Switch,
+  withRouter
 } from 'react-router-dom';
+
+class _RouteWatch extends React.Component {
+  componentDidUpdate(prevProps) {
+    if (prevProps.location !== this.props.location) {
+      this.trackPageview();
+    }
+  }
+
+  trackPageview() {
+    if (window.gtag) {
+      // TODO: Do we want to include the search query here? i think no because it destroys the page view stats
+      // but maybe we need to handle those a different way instead
+      // TODO: move this to an abstract helper, later can have an "event" helper too easily
+      window.gtag('config', 'UA-111136819-2', { page_path: this.props.location.pathname });
+    }
+  }
+
+  render() {
+    return null;
+  }
+}
+const RouteWatch = withRouter(_RouteWatch);
 
 const App = () => (
   <Router>
     <div>
+      <RouteWatch />
       <AuthenticationGate />
       <Layout>
         <Switch>
