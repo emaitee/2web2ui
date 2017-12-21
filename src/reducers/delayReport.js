@@ -1,5 +1,8 @@
 const initialState = {
-  reasons: []
+  reasons: [],
+  aggregates: {},
+  aggregatesLoading: false,
+  reasonsLoading: false
 };
 
 export default (state = initialState, { type, payload }) => {

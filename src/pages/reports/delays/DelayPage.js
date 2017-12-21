@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -11,7 +12,8 @@ import { Page, Panel, UnstyledLink } from '@sparkpost/matchbox';
 import ShareModal from '../components/ShareModal';
 import Filters from '../components/Filters';
 import PanelLoading from 'src/components/panelLoading/PanelLoading';
-
+import MetricsSummary from '../components/MetricsSummary';
+import moment from 'moment';
 
 const columns = [{ label: 'Reason', width: '45%' }, 'Domain', 'Delayed', 'Delayed First Attempt (%)'];
 
@@ -91,12 +93,33 @@ export class DelayPage extends Component {
     />;
   }
 
+  renderTopLevelMetrics() {
+    const { aggregatesLoading, aggregates, filters } = this.props;
+    console.log(filters);
+    const from = moment(filters.from);
+    const to = moment(filters.to);
+    const range = from.to(to, true);
+    console.log(range);
+
+    if (aggregatesLoading) {
+      return <PanelLoading />;
+    }
+
+    return <MetricsSummary
+      rateValue={(aggregates.count_delayed_first / aggregates.count_accepted) * 100}
+      rateTitle={'Delayed Rate'}>
+      <strong>{aggregates.count_delayed}</strong> of your messages were delayed of <strong>{aggregates.count_accepted}</strong> messages accepted in last {range}.
+    </MetricsSummary>;
+
+  }
+
   render() {
     const { modal, link } = this.state;
 
     return (
       <Page title='Delay Report'>
         <Filters refresh={this.handleRefresh} onShare={this.handleModalToggle} />
+        { this.renderTopLevelMetrics() }
         <Panel title='Delayed Messages' className='ReasonsTable'>
           { this.renderCollection() }
         </Panel>
@@ -117,7 +140,9 @@ const mapStateToProps = (state) => {
     filters: state.reportFilters,
     tableLoading,
     reasons: state.delayReport.reasons,
-    totalAccepted: aggregates ? aggregates.count_accepted : 1
+    totalAccepted: aggregates ? aggregates.count_accepted : 1,
+    aggregates,
+    aggregatesLoading: state.delayReport.aggregatesLoading
   };
 };
 
