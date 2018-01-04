@@ -94,12 +94,19 @@ export class DelayPage extends Component {
   }
 
   renderTopLevelMetrics() {
+    // need to control handling 1 hour/day/month
+    moment.updateLocale('en', {
+      relativeTime: {
+        h: 'hour',
+        d: 'day',
+        M: 'month'
+      }
+    });
+
     const { aggregatesLoading, aggregates, filters } = this.props;
-    console.log(filters);
     const from = moment(filters.from);
     const to = moment(filters.to);
     const range = from.to(to, true);
-    console.log(range);
 
     if (aggregatesLoading) {
       return <PanelLoading />;
@@ -108,7 +115,7 @@ export class DelayPage extends Component {
     return <MetricsSummary
       rateValue={(aggregates.count_delayed_first / aggregates.count_accepted) * 100}
       rateTitle={'Delayed Rate'}>
-      <strong>{aggregates.count_delayed}</strong> of your messages were delayed of <strong>{aggregates.count_accepted}</strong> messages accepted in last {range}.
+      { aggregates.count_delayed && <span><strong>{aggregates.count_delayed.toLocaleString()}</strong> of your messages were delayed of <strong>{aggregates.count_accepted.toLocaleString()}</strong> messages accepted in <strong>last {range}</strong>.</span> }
     </MetricsSummary>;
 
   }
