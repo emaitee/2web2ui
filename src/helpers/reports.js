@@ -83,8 +83,24 @@ function parseSearch(search) {
   return { options, filters: filtersList };
 }
 
+function humanizeTimeRange(from, to) {
+  // need to control how to handle 1 hour/day/month
+  moment.updateLocale('en', {
+    relativeTime: {
+      h: 'hour',
+      d: '24 hours',
+      M: '30 days'
+    }
+  });
+
+  from = moment(from);
+  to = moment(to);
+  return from.to(to, true);
+}
+
 export {
   getFilterSearchOptions,
   getShareLink,
+  humanizeTimeRange,
   parseSearch
 };

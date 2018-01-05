@@ -6,7 +6,8 @@ import styles from './MetricsSummary.module.scss';
 
 class MetricsSummary extends Component {
   render() {
-    const { children, rateValue, rateTitle } = this.props;
+    const { rateValue, rateTitle } = this.props;
+    const children = React.Children.toArray(this.props.children);
 
     return (
       <Panel accent>
@@ -20,8 +21,9 @@ class MetricsSummary extends Component {
           <Grid.Column>
             <div className={styles.panelvertical}>
               <p className={styles.Description}>
-                {children}
+                {children[0]}
               </p>
+              {children.length > 1 && children[1]}
             </div>
           </Grid.Column>
         </Grid>

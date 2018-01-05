@@ -1,10 +1,11 @@
+/* eslint max-lines: ["error", 175] */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { refreshBounceChartMetrics, refreshBounceTableMetrics } from 'src/actions/bounceReport';
 import { addFilter, refreshTypeaheadCache } from 'src/actions/reportFilters';
-import { getShareLink, getFilterSearchOptions, parseSearch } from 'src/helpers/reports';
+import { getShareLink, getFilterSearchOptions, parseSearch, humanizeTimeRange } from 'src/helpers/reports';
 import { showAlert } from 'src/actions/globalAlert';
 
 import { TableCollection, Empty, LongTextContainer } from 'src/components';
@@ -14,6 +15,7 @@ import { Page, Panel, UnstyledLink } from '@sparkpost/matchbox';
 import ShareModal from '../components/ShareModal';
 import Filters from '../components/Filters';
 import ChartGroup from './components/ChartGroup';
+import MetricsSummary from '../components/MetricsSummary';
 
 const columns = [{ label: 'Reason', width: '45%' }, 'Domain', 'Category', 'Classification', 'Count (%)'];
 
@@ -104,12 +106,29 @@ export class BouncePage extends Component {
     />;
   }
 
+  renderTopLevelMetrics() {
+    const { aggregatesLoading, aggregates, filters } = this.props;
+
+    if (aggregatesLoading) {
+      return <PanelLoading />;
+    }
+
+    if (aggregates) {
+      return <MetricsSummary
+        rateValue={(aggregates.countBounce / aggregates.countTargeted) * 100}
+        rateTitle={'Bounce Rate'}>
+        { aggregates.countBounce && <span><strong>{aggregates.countBounce.toLocaleString()}</strong> of your messages were bounced of <strong>{aggregates.countTargeted.toLocaleString()}</strong> messages targeted in the <strong>last {humanizeTimeRange(filters.from, filters.to)}</strong>.</span> }
+      </MetricsSummary>;
+    }
+  }
+
   render() {
     const { modal, link } = this.state;
 
     return (
       <Page title='Bounce Report'>
         <Filters refresh={this.handleRefresh} onShare={this.handleModalToggle} />
+        { this.renderTopLevelMetrics() }
         { this.renderChart() }
         <Panel title='Bounced Messages' className='ReasonsTable'>
           { this.renderCollection() }
@@ -124,12 +143,14 @@ export class BouncePage extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const chartLoading = state.bounceReport.aggregatesLoading || state.bounceReport.categoriesLoading;
+  const aggregatesLoading = state.bounceReport.aggregatesLoading;
+  const chartLoading = aggregatesLoading || state.bounceReport.categoriesLoading;
   const tableLoading = chartLoading || state.bounceReport.reasonsLoading;
   const aggregates = state.bounceReport.aggregates;
   return {
     filters: state.reportFilters,
     chartLoading,
+    aggregatesLoading,
     aggregates,
     totalBounces: aggregates ? aggregates.countBounce : 1,
     tableLoading,

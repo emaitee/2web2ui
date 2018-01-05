@@ -1,11 +1,10 @@
-/* eslint-disable */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { TableCollection, Empty, LongTextContainer } from 'src/components';
 import { addFilter, refreshTypeaheadCache } from 'src/actions/reportFilters';
 import { loadDelayReasonsByDomain, loadDelayMetrics } from 'src/actions/delayReport';
-import { parseSearch, getFilterSearchOptions, getShareLink } from 'src/helpers/reports';
+import { parseSearch, getFilterSearchOptions, getShareLink, humanizeTimeRange } from 'src/helpers/reports';
 import { Percent } from 'src/components/formatters';
 import { showAlert } from 'src/actions/globalAlert';
 import { Page, Panel, UnstyledLink } from '@sparkpost/matchbox';
@@ -13,8 +12,6 @@ import ShareModal from '../components/ShareModal';
 import Filters from '../components/Filters';
 import PanelLoading from 'src/components/panelLoading/PanelLoading';
 import MetricsSummary from '../components/MetricsSummary';
-import moment from 'moment';
-
 const columns = [{ label: 'Reason', width: '45%' }, 'Domain', 'Delayed', 'Delayed First Attempt (%)'];
 
 export class DelayPage extends Component {
@@ -94,19 +91,7 @@ export class DelayPage extends Component {
   }
 
   renderTopLevelMetrics() {
-    // need to control handling 1 hour/day/month
-    moment.updateLocale('en', {
-      relativeTime: {
-        h: 'hour',
-        d: 'day',
-        M: 'month'
-      }
-    });
-
     const { aggregatesLoading, aggregates, filters } = this.props;
-    const from = moment(filters.from);
-    const to = moment(filters.to);
-    const range = from.to(to, true);
 
     if (aggregatesLoading) {
       return <PanelLoading />;
@@ -115,9 +100,9 @@ export class DelayPage extends Component {
     return <MetricsSummary
       rateValue={(aggregates.count_delayed_first / aggregates.count_accepted) * 100}
       rateTitle={'Delayed Rate'}>
-      { aggregates.count_delayed && <span><strong>{aggregates.count_delayed.toLocaleString()}</strong> of your messages were delayed of <strong>{aggregates.count_accepted.toLocaleString()}</strong> messages accepted in <strong>last {range}</strong>.</span> }
+      { aggregates.count_delayed && <span><strong>{aggregates.count_delayed.toLocaleString()}</strong> of your messages were delayed of <strong>{aggregates.count_accepted.toLocaleString()}</strong> messages accepted in the <strong>last {humanizeTimeRange(filters.from, filters.to)}</strong>.</span> }
+      { aggregates.count_delayed_first && <small>{aggregates.count_delayed_first.toLocaleString()} were delayed on first attempt.</small> }
     </MetricsSummary>;
-
   }
 
   render() {
