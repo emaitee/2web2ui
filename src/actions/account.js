@@ -32,9 +32,7 @@ export function update(data) {
   });
 }
 
-
 export function register(data) {
-
   return sparkpostApiRequest({
     type: 'CREATE_ACCOUNT',
     meta: {
