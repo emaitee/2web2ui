@@ -19,7 +19,8 @@ import {
   webhooks,
   ipPools,
   PageNotFound,
-  DefaultRedirect
+  DefaultRedirect,
+  JoinPage
 } from 'src/pages';
 
 import {
@@ -90,6 +91,11 @@ const routes = [
     path: '/register',
     public: true,
     component: RegisterPage
+  },
+  {
+    path: '/__join',
+    public: true,
+    component: JoinPage
   },
 
   /**
