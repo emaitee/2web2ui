@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { snakeToFriendly } from 'src/helpers/string';
-import { Page, Banner, Panel } from '@sparkpost/matchbox';
+import { Page, Banner } from '@sparkpost/matchbox';
 import { PanelLoading, TableCollection, ApiErrorBanner, Empty } from 'src/components';
 import DisplayDate from './components/DisplayDate';
 import BasicFilter from './components/BasicFilter';
+import AdvancedFiltersPrototype from './components/AdvancedFiltersPrototype';
 import ViewDetailsButton from './components/ViewDetailsButton';
 import { getMessageEvents } from 'src/actions/messageEvents';
 import { selectMessageEvents } from 'src/selectors/messageEvents';
@@ -81,12 +82,13 @@ export class MessageEventsPage extends Component {
     const { error } = this.props;
 
     return (
-      <Page title='Message Events'>
-        <Panel sectioned>
-          <BasicFilter />
-        </Panel>
-        { error ? this.renderError() : this.renderCollection() }
-      </Page>
+      <div>
+        <Page title='Message Events'>
+          <AdvancedFiltersPrototype />
+          { error ? this.renderError() : this.renderCollection() }
+        </Page>
+        <BasicFilter />
+      </div>
     );
   }
 
