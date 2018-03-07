@@ -106,12 +106,11 @@ export class EditPage extends Component {
       return this.renderError();
     }
 
-    return <Panel>
-      <Panel.Section>
+    return (
+      <Panel>
         <PoolForm onSubmit={this.onUpdatePool} isNew={false} />
-      </Panel.Section>
-    </Panel>;
-
+      </Panel>
+    );
   }
 
   render() {

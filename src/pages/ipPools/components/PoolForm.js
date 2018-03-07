@@ -1,7 +1,9 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { Button } from '@sparkpost/matchbox';
+import { Panel, Button, TextField, Grid } from '@sparkpost/matchbox';
+import DomainTypeahead from './DomainTypeahead';
 import { SelectWrapper } from 'src/components/reduxFormWrappers';
 import { TableCollection } from 'src/components';
 import { required } from 'src/helpers/validation';
@@ -9,9 +11,16 @@ import { TextFieldWrapper } from 'src/components';
 import { selectCurrentPoolInitialValues, selectIpsForCurrentPool } from 'src/selectors/ipPools';
 import isDefaultPool from '../helpers/defaultPool';
 
+import { list as listDomains } from 'src/actions/sendingDomains';
+import { selectReadyForDkim } from 'src/selectors/sendingDomains';
+
 const columns = ['Sending IP', 'Hostname', 'IP Pool'];
 
 export class PoolForm extends Component {
+  componentDidMount() {
+    this.props.listDomains();
+  }
+
   poolSelect = (ip, poolOptions, submitting) => (<Field
     name={ip.id}
     component={SelectWrapper}
@@ -70,36 +79,68 @@ export class PoolForm extends Component {
 
     return (
       <form onSubmit={handleSubmit}>
-        <Field
-          name="name"
-          component={TextFieldWrapper}
-          validate={required}
-          label="Pool Name"
-          disabled={editingDefault || submitting}
-          helpText={helpText}
-        />
+        <Panel.Section>
+          <Field
+            name="name"
+            component={TextFieldWrapper}
+            validate={required}
+            label="Pool Name"
+            disabled={editingDefault || submitting}
+            helpText={helpText}
+          />
+        </Panel.Section>
+        <Panel.Section>
+          <Grid>
+            <Grid.Column xs={6}>
+              <Field
+                name='domain.dkim'
+                component={DomainTypeahead}
+                label='Signing Domain'
+                // disabled={!domains.length || published}
+                // validate={[required, emailOrSubstitution, this.validateDomain]}
+                domains={this.props.domains}
+                // helpText={this.fromEmailWarning()}
+              />
+            </Grid.Column>
+            <Grid.Column xs={6}>
+              <Field
+                name='domain.fbl'
+                component={DomainTypeahead}
+                label='FBL Domain'
+                // disabled={!domains.length || published}
+                // validate={[required, emailOrSubstitution, this.validateDomain]}
+                domains={this.props.domains}
+                // helpText={this.fromEmailWarning()}
+              />
+            </Grid.Column>
+          </Grid>
+
+        </Panel.Section>
 
         { this.renderCollection() }
 
-        <Button submit primary disabled={submitting || pristine}>
-          {submitting ? 'Saving' : submitText}
-        </Button>
+        <Panel.Section>
+          <Button submit primary disabled={submitting || pristine}>
+            {submitting ? 'Saving' : submitText}
+          </Button>
+        </Panel.Section>
       </form>
     );
   }
 }
 
-const mapStateToProps = (state, { isNew }) => {
+const mapStateToProps = (state, props) => {
   const { ipPools } = state;
   const { pool, list = []} = ipPools;
 
   return {
     list,
     pool,
+    domains: selectReadyForDkim(state, props),
     ips: selectIpsForCurrentPool(state),
     initialValues: selectCurrentPoolInitialValues(state)
   };
 };
 
 const PoolReduxForm = reduxForm({ form: 'poolForm' })(PoolForm);
-export default connect(mapStateToProps, {})(PoolReduxForm);
+export default connect(mapStateToProps, { listDomains })(PoolReduxForm);

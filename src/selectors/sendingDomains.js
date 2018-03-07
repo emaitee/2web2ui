@@ -28,6 +28,11 @@ export const selectReadyForBounce = createSelector(
   (domains) => _.filter(domains, (domain) => resolveReadyFor(domain.status).bounce)
 );
 
+export const selectReadyForDkim = createSelector(
+  [getDomains],
+  (domains) => _.filter(domains, (domain) => resolveReadyFor(domain.status).dkim)
+);
+
 export const hasUnverifiedDomains = createSelector(
   [getDomains],
   (domains) => _.reduce(domains, (acc, domain) => acc || isUnverified(domain), false)
