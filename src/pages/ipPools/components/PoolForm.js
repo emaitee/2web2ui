@@ -71,6 +71,16 @@ export class PoolForm extends Component {
     );
   }
 
+  domainWarning() {
+    const { domains } = this.props;
+
+    if (!domains.length) {
+      return 'You do not have any verified sending domains to use.';
+    }
+
+    return null;
+  }
+
   render() {
     const { isNew, pool, handleSubmit, submitting, pristine } = this.props;
     const submitText = isNew ? 'Create IP Pool' : 'Update IP Pool';
@@ -96,10 +106,10 @@ export class PoolForm extends Component {
                 name='domain.dkim'
                 component={DomainTypeahead}
                 label='Signing Domain'
-                // disabled={!domains.length || published}
+                disabled={!this.props.domains.length}
                 // validate={[required, emailOrSubstitution, this.validateDomain]}
                 domains={this.props.domains}
-                // helpText={this.fromEmailWarning()}
+                helpText={this.domainWarning()}
               />
             </Grid.Column>
             <Grid.Column xs={6}>
@@ -107,7 +117,7 @@ export class PoolForm extends Component {
                 name='domain.fbl'
                 component={DomainTypeahead}
                 label='FBL Domain'
-                // disabled={!domains.length || published}
+                disabled={!this.props.domains.length}
                 // validate={[required, emailOrSubstitution, this.validateDomain]}
                 domains={this.props.domains}
                 // helpText={this.fromEmailWarning()}

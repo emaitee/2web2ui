@@ -3,6 +3,10 @@
 .Typeahead {
   margin: 0 0 spacing();
   position: relative;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .List {

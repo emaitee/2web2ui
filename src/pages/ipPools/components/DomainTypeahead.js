@@ -57,7 +57,6 @@ export class DomainTypeahead extends Component {
       }
       return options;
     }, []);
-    console.log(matches);
 
     matches = sortMatch(matches, inputValue, (item) => item);
 
@@ -113,7 +112,7 @@ export class DomainTypeahead extends Component {
       <Downshift
         onInputValueChange={this.handleInputValueChange}
         onStateChange={this.handleStateChange}
-        selectedItem={this.state.value} >
+        selectedItem={this.state.value}>
         {this.typeaheadFn}
       </Downshift>
     );
