@@ -15,6 +15,7 @@ jest.mock('js-cookie');
 jest.mock('src/config', () => ({
   zuora: {}, //axiosInstance throws without this
   authentication: { cookie: {}}, //authCookie throws without this
+  cookieConsent: { cookie: {}},
   gaTag: 'ga101',
   links: {
     submitTicket: 'https://support.sparkpost.com/customer/portal/emails/new'
