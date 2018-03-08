@@ -1,6 +1,6 @@
 import React from 'react';
 import { PublicRoute, ProtectedRoute, AuthenticationGate } from 'src/components/auth';
-import { Support, GlobalAlertWrapper, RouteWatch } from 'src/components';
+import { CookieConsent, Support, GlobalAlertWrapper, RouteWatch } from 'src/components';
 import SiftScience from 'src/components/siftScience/SiftScience';
 import Layout from 'src/components/layout/Layout';
 import routes from 'src/config/routes';
@@ -18,6 +18,7 @@ const App = () => (
       {config.siftScience && <SiftScience config={config.siftScience} />}
       <RouteWatch />
       <AuthenticationGate />
+      <CookieConsent />
       <Layout>
         <Switch>
           {

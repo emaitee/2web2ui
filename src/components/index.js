@@ -23,6 +23,7 @@ export { default as ShortKeyCode } from './shortKeyCode/ShortKeyCode';
 export { default as ReadyFor } from './domainStatus/ReadyFor';
 export { default as StatusTooltipHeader } from './domainStatus/StatusTooltipHeader';
 export { default as DomainStatusCell } from './domainStatus/DomainStatusCell';
+export { default as CookieConsent } from './cookieConsent/CookieConsent';
 
 
 export * from './collection';
