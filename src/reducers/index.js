@@ -11,6 +11,7 @@ import bounceReport from './bounceReport';
 import delayReport from './delayReport';
 import engagementReport from './engagementReport';
 import rejectionReport from './rejectionReport';
+import cookieConsent from './cookieConsent';
 import currentUser from './currentUser';
 import globalAlert from './globalAlert';
 import ipPools from './ipPools';
@@ -39,6 +40,7 @@ const appReducer = combineReducers({
   auth,
   billing,
   bounceReport,
+  cookieConsent,
   delayReport,
   engagementReport,
   rejectionReport,

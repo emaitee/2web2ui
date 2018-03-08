@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Action Creator: cookie consent  giveConsent should set the cookie 1`] = `
+Object {
+  "type": "GIVE_COOKIE_CONSENT",
+}
+`;
+
+exports[`Action Creator: cookie consent  initConsentState should include cookie state in payload 1`] = `
+Object {
+  "payload": Object {
+    "isCookieSet": true,
+  },
+  "type": "INIT_COOKIE_CONSENT",
+}
+`;

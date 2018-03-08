@@ -12,6 +12,15 @@ const testConfig = {
         path: '/'
       }
     }
+  },
+  cookieConsent: {
+    cookie: {
+      name: 'consent',
+      ageDays: 365,
+      options: {
+        path: '/'
+      }
+    }
   }
 };
 
