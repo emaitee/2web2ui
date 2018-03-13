@@ -32,7 +32,7 @@ const config = {
   },
   cookieConsent: {
     cookie: {
-      name: 'consent',
+      name: 'cookieConsent',
       ageDays: 365,
       options: {
         domain: 'no-default-set',

@@ -3,6 +3,7 @@ window.SP.productionConfig = {
   apiBase: 'http://api.sparkpost.test/api/v1',
   cookieConsent: {
     cookie: {
+      name: 'cookieConsent',
       options: {
         domain: 'sparkpost.test'
       }

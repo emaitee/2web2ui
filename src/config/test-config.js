@@ -15,7 +15,7 @@ const testConfig = {
   },
   cookieConsent: {
     cookie: {
-      name: 'consent',
+      name: 'cookieConsent',
       ageDays: 365,
       options: {
         path: '/'
