@@ -9,7 +9,6 @@ describe('Component: CookieConsent', () => {
   beforeEach(() => {
     props = {
       consentGiven: false,
-      initConsentState: jest.fn(),
       giveConsent: jest.fn()
     };
 
@@ -30,10 +29,6 @@ describe('Component: CookieConsent', () => {
   it('should not render the banner with consent', () => {
     wrapper.setProps({ consentGiven: true });
     expect(wrapper).toMatchSnapshot();
-  });
-
-  it('should extract consent state on mount', () => {
-    expect(props.initConsentState).toHaveBeenCalledTimes(1);
   });
 
   it('should give consent on dismissal', () => {

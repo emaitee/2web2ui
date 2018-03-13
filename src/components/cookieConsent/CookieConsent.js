@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { UnstyledLink, Snackbar } from '@sparkpost/matchbox';
 
-import { initConsentState, giveConsent } from 'src/actions/cookieConsent';
+import { giveConsent } from 'src/actions/cookieConsent';
 
 import styles from './CookieConsent.module.scss';
 
@@ -16,10 +16,6 @@ export class CookieConsent extends React.Component {
   storeConsent = () => {
     this.props.giveConsent();
   };
-
-  componentDidMount() {
-    this.props.initConsentState();
-  }
 
   render() {
     const { consentGiven } = this.props;
@@ -35,6 +31,6 @@ export class CookieConsent extends React.Component {
 // connect consent state, set consent action
 export default connect(
   ({ cookieConsent: { consentGiven }}) => ({ consentGiven }),
-  { initConsentState, giveConsent }
+  { giveConsent }
 )(CookieConsent);
 
