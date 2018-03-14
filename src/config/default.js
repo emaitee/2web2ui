@@ -35,7 +35,7 @@ const config = {
       name: 'cookieConsent',
       ageDays: 365,
       options: {
-        domain: 'no-default-set',
+        domain: 'sparkpost.com',
         path: '/'
       }
     }

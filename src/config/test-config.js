@@ -18,6 +18,7 @@ const testConfig = {
       name: 'cookieConsent',
       ageDays: 365,
       options: {
+        domain: 'test',
         path: '/'
       }
     }
