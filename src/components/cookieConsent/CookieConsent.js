@@ -8,7 +8,7 @@ import styles from './CookieConsent.module.scss';
 
 export const ConsentBar = ({ onDismiss }) => <div className={styles.CookieConsent}>
   <div className={styles.ConsentBar}>
-    <Snackbar maxWidth={600} onDismiss={onDismiss}>By continuing to use this site you consent to the use of cookies on your device as described in our <UnstyledLink external to={'https://www.sparkpost.com/policies/privacy/'}>Privacy and Cookie Policy</UnstyledLink> unless you have disabled them. You can change your Cookie Settings at any time but parts of our site will not function correctly without them.</Snackbar>
+    <Snackbar maxWidth={600} onDismiss={onDismiss}>We use cookies to offer you a better browsing experience, analyze site traffic, and personalize content and advertisements.  Read more about how we use cookies and how you can control them by visiting our <UnstyledLink external to={'https://www.sparkpost.com/policies/privacy/'}>Cookie Policy</UnstyledLink>.  Note that parts of our site will not function properly if you disable them.  If you continue to use this site without disabling cookies, you consent to our use of them.</Snackbar>
   </div>
 </div>;
 
